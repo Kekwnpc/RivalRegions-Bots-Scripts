@@ -1,0 +1,107 @@
+// ==UserScript==
+// @name         Rival Regions Market Bot
+// @namespace    http://tampermonkey.net/
+// @version      0.15
+// @description  Requiere AutoSell y AutoBuyer
+// @author       KCSystem
+// @match        http://rivalregions.com
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    var zNode       = document.createElement ('div');
+    zNode.innerHTML = '<button title="Requiere AutoSell y AutoBuyer" class="btn" id="buy-and-sell-btn" type="button">CompraVenta!</button>'+
+        '<select id="all-resource"><option value="3">Petroleo</option><option value="4">Mineral</option><option value="11">Uranio</option><option value="15">Diamantes</option></select>'+
+        '<input value="" placeholder="Precio de Venta" id="all-sellerPrice"/>'+
+        '<input value="" placeholder="Precio Maximo de Compra" id="all-maxPrice"/>'+
+        '<span id="all-marketbot" style="display:none;background: white;width: 250px;height: 250px;line-height: 250px;position: absolute;top: -600px;text-align:  center;color: red;">Market Bot ACTIVADO</span>';
+
+    zNode.setAttribute ('id', 'myContainer');
+    zNode.setAttribute ('style', 'z-index:9999999;position:absolute;bottom:0px;');
+    document.body.appendChild (zNode);
+
+    var allauto = 0;
+    //--- Activate the newly added button.
+    document.getElementById ("buy-and-sell-btn").addEventListener (
+        "click", AllAutoClickButton, false
+    );
+
+    function AllAuto(){
+        $('#reload_menu').click();
+        setTimeout(function(){
+                MarketBuyer();
+            }, 0);
+        setTimeout(function(){
+               MarketSeller();
+            }, 3000);
+        setTimeout(function(){
+               MarketBuyer();
+            }, 7000);
+        setTimeout(function(){
+               MarketBuyer();
+            }, 10000);
+    }
+
+    function MarketSeller () {
+        console.log('Start Seller');
+        var maxSellAmmount = {3: 204800000,4: 204800000, 11:15360000, 15:153600};
+        var resource = document.getElementById('all-resource').value;
+        var sellerPrice = document.getElementById('all-sellerPrice').value;
+        var sellerAmmount = maxSellAmmount[resource];
+
+        $('.storage_item[url='+resource+']').click();
+        setTimeout(function(){
+            $(".storage_sell").click();
+            setTimeout(function(){
+                $(".storage_sell_price").val(sellerPrice);
+                //$(".storage_sell_ammount").val(sellerAmmount);
+                $('.storage_sell_button').removeClass("no_pointer").removeClass("button_red").addClass("button_green");
+                $('.storage_sell_button').click();
+                console.log('End Seller');
+            }, 1000);
+        }, 1000);
+    }
+
+    function MarketBuyer () {
+        console.log('Start-Buyer');
+        var money = $('#money span').html().replace(/\./g, '');
+        var resource = document.getElementById('all-resource');
+        var maxPrice = document.getElementById('all-maxPrice');
+
+        $('.storage_item[url='+resource.value+']').click();
+        setTimeout(function(){
+            var currentPrice = $('.storage_price span span').html().substr(0, $('.storage_price span span').html().indexOf(' ')).replace(/\./g, '');
+            if (currentPrice <= maxPrice.value){
+                // seller quantity
+                var buyable = 0;
+                var sellerSells = $('.storage_market_number').html().replace(/\./g, '');
+                // max money buying
+                var canBuyWithMoney = Math.trunc(money / currentPrice);
+                if(sellerSells > canBuyWithMoney){
+                    buyable = canBuyWithMoney - 100;
+                }else{
+                    buyable = sellerSells - 100;
+                }
+                // Lets buy now
+                $('.storage_buy_input').val(buyable);
+                $('.storage_buy_button').click();
+                console.warn('Comprado: '+sellerSells+' a '+currentPrice);
+            }
+        }, 1000);
+        console.log('End-Buyer');
+    }
+
+    function AllAutoClickButton(){
+        if(allauto == 0){
+            console.log('Starting Bot...');
+            $('#all-marketbot').show();
+            allauto = setInterval(AllAuto, 12000);
+        }else{
+            clearInterval(allauto);
+            allauto = 0;
+            $('#all-marketbot').hide();
+            console.log('Stopping Bot...');
+        }
+    }
+})();
