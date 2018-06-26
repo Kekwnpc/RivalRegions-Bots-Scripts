@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Rival Regions Market Bot
 // @namespace    http://tampermonkey.net/
-// @version      0.15
+// @version      0.16
 // @description  Requiere AutoSell y AutoBuyer
 // @author       KCSystem
 // @match        http://rivalregions.com
 // @grant        none
+// @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/full_market_bot
 // ==/UserScript==
 
 (function() {
