@@ -1,0 +1,61 @@
+// ==UserScript==
+// @name         Rival Regions Market Loker
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Automatically lock on Market buying by 1
+// @author       KCSystem
+// @match        http://rivalregions.com
+// @grant        none
+// @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/market_bot_locker
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    var zNode       = document.createElement ('div');
+    zNode.innerHTML = '<button id="marketlocker-btn" type="button">marketLocker!</button> '+
+        ' <select id="resource-locker"><option value="3">Petroleo</option><option value="4">Mineral</option><option value="11">Uranio</option><option value="15">Diamantes</option></select>'+
+        ' <input placeholder="Precio Maximo Bloqueo" id="maxPrice-locker"/>'+
+        ' <span id="locker-message" style="display:none;background:white;width:250px;color:red">Locker ACTIVADO</span>';
+    zNode.setAttribute ('id', 'marketLocker');
+    zNode.setAttribute ('style', 'z-index:9999999;position:absolute;bottom:40px;');
+    document.body.appendChild (zNode);
+
+    var locker = 0;
+    //--- Activate the newly added button.
+    document.getElementById ("marketlocker-btn").addEventListener (
+        "click", LockerActionButton, false
+    );
+
+    function MarketLocker () {
+        var money = $('#money span').html().replace(/\./g, '');
+        var resource = document.getElementById('resource-locker');
+        var maxPrice = document.getElementById('maxPrice-locker');
+
+        $('.storage_item[url='+resource.value+']').click();
+        var currentPrice = $('.storage_price span span').html().substr(0, $('.storage_price span span').html().indexOf(' '));
+        if (currentPrice <= maxPrice.value){
+            // seller quantity
+            var sellerSells = $('.storage_market_number').html().replace(/\./g, '');
+            // max money buying
+            var canBuyWithMoney = Math.trunc(money / currentPrice);
+            if(canBuyWithMoney == 0){
+                clearInterval(loop);
+            }
+
+            // Lets buy now
+            $('.storage_buy_input').val(Math.floor(Math.random() * 25 + 1));
+            $('.storage_buy_button').click();
+        }
+    }
+
+    function LockerActionButton(){
+        if(locker == 0){
+            $('#locker-message').show();
+            locker = setInterval(MarketLocker, 1000);
+        }else{
+            clearInterval(locker);
+            locker = 0;
+            $('#locker-message').hide();
+        }
+    }
+})();
