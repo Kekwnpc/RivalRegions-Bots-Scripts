@@ -1,0 +1,64 @@
+// ==UserScript==
+// @name         Rival Regions - AutoLearn
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Nyancat
+// @author       You
+// @match        http://rivalregions.com
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    var zNode       = document.createElement ('div');
+    zNode.innerHTML = '<button title="AutoLearner" class="btn" id="autolearn-btn" type="button">AutoLearn!</button>'+
+        '<select id="all-educate"><option value="3">Aguante</option><option value="2">Educación</option><option value="1">Fuerza</option></select>'+
+        '<select id="all-gold"><option value="1">Pago en Dinero</option><option value="2">Pago con Oro</option></select>'+
+        '<span id="all-learnerbot" style="display:none;background: white;width: 250px;height: 250px;line-height: 250px;position: absolute;top: -600px;text-align:  center;color: red;">LEARNER Bot ACTIVADO</span>';
+
+    zNode.setAttribute ('id', 'learner-container');
+    zNode.setAttribute ('style', 'z-index:9999999;position:absolute;bottom:100px;');
+    document.body.appendChild (zNode);
+
+    var perkauto = 0;
+    var nextTime = 10000;
+    var vdate = Date.now();
+    //--- Activate the newly added button.
+    document.getElementById ("autolearn-btn").addEventListener (
+        "click", AllAutoClickButton, false
+    );
+
+    function AllAutoClickButton(){
+        var perk = document.getElementById('all-educate');
+        var gold = document.getElementById('all-gold');
+
+        setTimeout(function(){
+            $(".index_menu").click();
+            }, 0);
+        setTimeout(function(){
+            $("div[perk="+perk.value+"].perk_source_1").click();
+            }, 1000);
+        setTimeout(function(){
+            $("div[perk="+perk.value+"][url="+gold.value+"] .button_blue").click();
+            setTimeout(function(){
+                AllAutoClickButton();
+            }, nextTime);
+        }, 3000);
+    }
+
+    function AutoLearner() {
+        console.log('Start-AutoLearner');
+        var money = $('#money span').html().replace(/\./g, '');
+        var perk = document.getElementById('all-educate');
+        var gold = document.getElementById('all-gold');
+        var timeandprice =  $("div[perk="+perk.value+"][url="+gold.value+"] .imp").html().replace(/[\.$]/g, '').split(',');
+        var time = timeandprice[1].split(':');
+
+        nextTime = ((time.length == 3 )? parseInt(time[0])*3600 + parseInt(time[1]) * 60 + parseInt(time[2]) + 15 : parseInt(time[0])*60 + parseInt(time[1]) + 15) * 1000;
+        if (Math.trunc(money / timeandprice[0])){
+            console.log('Nyaah'+nextTime);
+            //$("div[perk="+perk.value+"][url="+gold.value+"] .button_blue").click();
+        }
+        console.log('End-Buyer');
+    }
+})();
