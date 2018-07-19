@@ -12,7 +12,7 @@
     'use strict';
     var zNode       = document.createElement ('div');
     zNode.innerHTML = '<button title="AutoLearner" class="btn" id="autolearn-btn" type="button">AutoLearn!</button>'+
-        '<select id="all-educate"><option value="3">Aguante</option><option value="2">Educación</option><option value="1">Fuerza</option></select>'+
+        '<select id="all-educate"><option value="3">Resistencia</option><option value="2">Educación</option><option value="1">Fuerza</option></select>'+
         '<select id="all-gold"><option value="1">Pago en Dinero</option><option value="2">Pago con Oro</option></select>'+
         '<span id="all-learnerbot" style="display:none;background: white;width: 250px;height: 250px;line-height: 250px;position: absolute;top: -600px;text-align:  center;color: red;">LEARNER Bot ACTIVADO</span>';
 
