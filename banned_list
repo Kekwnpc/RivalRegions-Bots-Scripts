@@ -1,0 +1,17 @@
+// ==UserScript==
+// @name         Rival Regions - BannedList
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  WorkPermit BannedList
+// @author       KCSystem
+// @match        http://rivalregions.com
+// @grant        none
+// @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/banned_list
+// ==/UserScript==
+
+
+(function() {
+    'use strict';
+
+    // Your code here...
+})();
