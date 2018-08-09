@@ -1,18 +1,22 @@
 {
   "2000625954":{
     "name":"Ankara Maura",
-    "reason":"Traitor"
+    "reason":"Traitor",
+    "level":0
   },
   "776108323537322":{
     "name":"Andre Araujo",
-    "reason":"Golpista Portugues"
+    "reason":"Golpista Portugues",
+    "level":1
   },
   "10212642636403846":{
     "name":"Evo Morales",
-    "reason":"Golpista Portugues"
+    "reason":"Golpista Portugues",
+    "level":2
   },
   "2000660970":{
     "name":"Sudoker",
-    "reason":"Golpista Portugues"
+    "reason":"Golpista Portugues",
+    "level":0
   }
 }
