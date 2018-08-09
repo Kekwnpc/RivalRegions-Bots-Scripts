@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - BannedList
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  WorkPermit BannedList
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -12,6 +12,31 @@
 
 (function() {
     'use strict';
+    var zNode       = document.createElement ('div');
+    zNode.innerHTML = '<button title="CheckerBanned" class="btn" id="CheckerBanned-btn" type="button">CheckerBanned!</button>';
 
-    // Your code here...
+    zNode.setAttribute ('id', 'learner-container');
+    zNode.setAttribute ('style', 'z-index:9999999;position:absolute;bottom:200px;color:white');
+    document.body.appendChild (zNode);
+
+        //--- Activate the newly added button.
+    document.getElementById ("CheckerBanned-btn").addEventListener (
+        "click", checkBann, false);
+
+    function checkBann(){
+    $.getJSON( "https://rawgit.com/Kytoh/MyBots/master/banned_list", function( data ) {
+        var Bannedlist = data;
+
+        $('#list_tbody > tr').each(function() {
+            let user = $(this).attr('user');
+            console.log(user);
+            console.log(Bannedlist[user]);
+            console.log(Bannedlist[user] !== "undefined");
+            if(typeof Bannedlist[user] !== "undefined"){
+                    $(this).attr("style", "background:red");
+                    $(this).after(Bannedlist[user].reason);
+            }
+        });
+    });
+    }
 })();
