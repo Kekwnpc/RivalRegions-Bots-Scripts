@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Rival Regions - BannedList
-// @namespace    http://tampermonkey.net/
+// @namespace    http://discord.gg/DtQQAZd
 // @version      0.4
 // @description  WorkPermit BannedList
 // @author       KCSystem
@@ -36,7 +36,6 @@
                 switch(Bannedlist[user].level){
                     case 0:
                         $(this).attr("style", "background:red");
-                        $(this).find($(".list_request_region")).remove();
                         break;
                     case 1:
                         $(this).attr("style", "background:orange");
@@ -49,6 +48,7 @@
                         break;
                 }
                 $(this).after(Bannedlist[user].reason);
+                $(this).find($(".list_request_region")).remove();
             }else{
                 $(this).attr("style", "background:green");
             }
