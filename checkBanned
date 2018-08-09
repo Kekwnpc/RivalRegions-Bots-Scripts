@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - BannedList
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  WorkPermit BannedList
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -33,9 +33,24 @@
             console.log(Bannedlist[user]);
             console.log(Bannedlist[user] !== "undefined");
             if(typeof Bannedlist[user] !== "undefined"){
-                $(this).attr("style", "background:red");
+                switch(Bannedlist[user].level){
+                    case 0:
+                        $(this).attr("style", "background:red");
+                        $(this).find($(".list_request_region")).remove();
+                        break;
+                    case 1:
+                        $(this).attr("style", "background:orange");
+                        break;
+                    case 2:
+                        $(this).attr("style", "background:yellow");
+                        break;
+                    case 9:
+                        $(this).attr("style", "background:grey");
+                        break;
+                }
                 $(this).after(Bannedlist[user].reason);
-                $(this).find($(".list_request_region")).remove();
+            }else{
+                $(this).attr("style", "background:green");
             }
         });
     });
