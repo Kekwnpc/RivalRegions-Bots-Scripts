@@ -6,7 +6,7 @@
 // @author       KCSystem
 // @match        http://rivalregions.com
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/banned_list
+// @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/checkBanned
 // ==/UserScript==
 
 
