@@ -1,27 +1,54 @@
 // ==UserScript==
 // @name         Rival Regions - BannedList
 // @namespace    http://discord.gg/DtQQAZd
-// @version      0.5
+// @version      0.6
 // @description  WorkPermit BannedList
 // @author       KCSystem
 // @match        http://rivalregions.com
-// @grant        none
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @require      http://userscripts-mirror.org/scripts/source/107941.user.js
 // @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/checkBanned
 // ==/UserScript==
 
-
 (function() {
     'use strict';
+    var auth_token = '';
+    var current_user_id = 0;
+
     var zNode       = document.createElement ('div');
-    zNode.innerHTML = '<button title="CheckerBanned" class="btn" id="CheckerBanned-btn" type="button">CheckerBanned!</button>';
+    zNode.innerHTML = '<button title="Load Residence BlackList" class="btn" id="CheckerBanned-btn" type="button">Residence BlackList</button>';
 
     zNode.setAttribute ('id', 'learner-container');
     zNode.setAttribute ('style', 'z-index:9999999;position:absolute;bottom:200px;color:white');
     document.body.appendChild (zNode);
 
-        //--- Activate the newly added button.
-    document.getElementById ("CheckerBanned-btn").addEventListener (
-        "click", checkBann, false);
+    //--- Activate the newly added button.
+    document.getElementById ("CheckerBanned-btn").addEventListener ("click", insertBanner, false);
+
+    function insertBanner(){
+        var pathname = window.location.href;
+        pathname = pathname.substring(pathname.indexOf("#")+1);
+        console.log(pathname);
+        if (pathname == 'leader/requests' || pathname == 'leader/requests_canceled'){
+            $("#slide_close").next().after('<div id="residence" style="width:70%;margin:auto;" class="ib tc"><h3>Residence BlackList</h3>'+
+                                           '<div style="padding:10px;width:40%;display:inline-block;">'+
+                                           '<span class="button_red" id="checkEspiñaList">BlackList Espiña</span></div>'+
+                                           '<div style="padding:10px;width:40%;display:inline-block;"></div>'+
+                                           '<div style="padding:10px;width:40%;display:inline-block;">Dummy</div>'+
+                                           '<div style="padding:10px;width:40%;display:inline-block;">Dummy</div>'+
+                                           '<div style="padding:10px;width:40%;display:inline-block;">Dummy</div>'+
+                                           '<div style="padding:10px;width:40%;display:inline-block;">Dummy</div>'+
+                                           '</div>');
+            document.getElementById ("checkEspiñaList").addEventListener ("click", checkBann, false);
+        }else{
+            console.log('Not Valid Direction');
+        }
+    }
+
+    function registerList(){
+
+    }
 
     function checkBann(){
     $.getJSON( "https://rawgit.com/Kytoh/MyBots/master/banned_list", function( data ) {
