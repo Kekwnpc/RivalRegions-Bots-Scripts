@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - BannedList
 // @namespace    http://discord.gg/DtQQAZd
-// @version      0.6
+// @version      0.7
 // @description  WorkPermit BannedList
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -31,14 +31,12 @@
         pathname = pathname.substring(pathname.indexOf("#")+1);
         console.log(pathname);
         if (pathname == 'leader/requests' || pathname == 'leader/requests_canceled'){
-            $("#slide_close").next().after('<div id="residence" style="width:70%;margin:auto;" class="ib tc"><h3>Residence BlackList</h3>'+
-                                           '<div style="padding:10px;width:40%;display:inline-block;">'+
-                                           '<span class="button_red" id="checkEspiñaList">BlackList Espiña</span></div>'+
-                                           '<div style="padding:10px;width:40%;display:inline-block;"></div>'+
-                                           '<div style="padding:10px;width:40%;display:inline-block;">Dummy</div>'+
-                                           '<div style="padding:10px;width:40%;display:inline-block;">Dummy</div>'+
-                                           '<div style="padding:10px;width:40%;display:inline-block;">Dummy</div>'+
-                                           '<div style="padding:10px;width:40%;display:inline-block;">Dummy</div>'+
+            $("#slide_close").next().after('<div id="residence" style="width:750px;margin:auto;" class="ib tc"><h3>Residence BlackList</h3>'+
+                                           '<div style="padding:10px;width:20%;display:inline-block;">Lists where i follow</div>'+
+                                           '<div style="padding:10px;width:70%;display:inline-block;"><span id="MyLists"><span class="list_1">13433_Espiña<img onclick="deletelist(\'list_1\')" style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>&nbsp; <span class="list_1">11323_NOS<img onclick="deletelist(\'list_1\')" style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>&nbsp; </div>'+
+                                           '<div style="padding:10px;width:20%;display:inline-block;">Join a new List</div>'+
+                                           '<div style="padding:10px;width:30%;display:inline-block;"><input type="text" id="new_list"></div>'+
+                                           '<div style="padding:10px;width:30%;display:inline-block;"><span class="button_red" id="checkEspiñaList">Apply BlackList</span></div>'+
                                            '</div>');
             document.getElementById ("checkEspiñaList").addEventListener ("click", checkBann, false);
         }else{
