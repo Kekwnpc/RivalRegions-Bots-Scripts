@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions Market Bot
 // @namespace    http://tampermonkey.net/
-// @version      0.16
+// @version      2.0.0
 // @description  Requiere AutoSell y AutoBuyer
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -11,16 +11,39 @@
 
 (function() {
     'use strict';
-    var zNode       = document.createElement ('div');
-    zNode.innerHTML = '<button title="Requiere AutoSell y AutoBuyer" class="btn" id="buy-and-sell-btn" type="button">CompraVenta!</button>'+
-        '<select id="all-resource"><option value="3">Petroleo</option><option value="4">Mineral</option><option value="11">Uranio</option><option value="15">Diamantes</option></select>'+
-        '<input value="" placeholder="Precio de Venta" id="all-sellerPrice"/>'+
-        '<input value="" placeholder="Precio Maximo de Compra" id="all-maxPrice"/>'+
-        '<span id="all-marketbot" style="display:none;background: white;width: 250px;height: 250px;line-height: 250px;position: absolute;top: -600px;text-align:  center;color: red;">Market Bot ACTIVADO</span>';
 
-    zNode.setAttribute ('id', 'myContainer');
-    zNode.setAttribute ('style', 'z-index:9999999;position:absolute;bottom:0px;');
+    var zNode       = document.createElement ('div');
+    zNode.innerHTML = '<button title="Start Market Bot" class="btn" id="MarketBot-btn" type="button">Market Bot</button>';
+    zNode.setAttribute ('id', 'learner-container');
+    zNode.setAttribute ('style', 'z-index:9999999;position:absolute;bottom:100px;color:white');
     document.body.appendChild (zNode);
+
+        //--- Activate the newly added button.
+    document.getElementById ("MarketBot-btn").addEventListener ("click", insertBanner, false);
+
+    function insertBanner(){
+        var pathname = window.location.href;
+        pathname = pathname.substring(pathname.indexOf("#")+1);
+        console.log(pathname);
+        if (pathname == 'storage'){
+            $(".konf_maker").parent().before('<br/><br/><div id="nyancatnyancat" style="width:750px;margin:auto;" class="ib tc"><h3>Market Bot</h3>'+
+                                           '<div style="padding:10px;width:20%;display:inline-block;">OE 12 Secs</div>'+
+                                           '<div style="padding:10px;width:70%;display:inline-block;"><select id="every-resource"><option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option><option value="2">3 Operations Every 12 Seconds (2 Buy + 1 Sell) </option><option value="3">4 Operations Every 12 Seconds (3 Buy + 1 Sell) </option></select></div>'+
+                                           '<div style="padding:10px;width:20%;display:inline-block;">Resource to Work On</div>'+
+                                           '<div style="padding:10px;width:70%;display:inline-block;"><select id="all-resource">'+
+                                             '<optgroup label="Resources"><option value="3">Petrol/Oil</option><option value="4">Mineral/Rocks</option><option value="11">Uranium</option><option value="15">Diamonds</option><option value="21">Liquid O2</option><option value="24">H3</option></optgroup>'+
+                                             '<optgroup label="Items"><option value="13">Antirad</option><option value="20">Stellar Ships</option><option value="20">Stellar Ships</option></optgroup>'+
+                                             '<optgroup label="Weapons"><option value="2">Tanks</option><option value="1">Planes</option><option value="14">Missile</option><option value="16">Bombership</option><option value="18">Battleship</option><option value="22">Lunar Tank</option><option value="23">Spacial Station</option><</optgroup>'+
+                                             '</select></div>'+
+                                           '<div style="padding:10px;width:20%;display:inline-block;">Pricing</div>'+
+                                           '<div style="padding:10px;width:45%;display:inline-block;">Sell Price: <input value="" placeholder="Sell Price" id="all-sellerPrice"/><br/>Buy Price: <input value="" placeholder="MAX buy Pricing" id="all-maxPrice"/></div>'+
+                                           '<div style="padding:10px;width:15%;display:inline-block;"><span class="button_red" id="buy-and-sell-btn">Start Bot</span></div>'+
+                                           '</div>');
+            document.getElementById ("buy-and-sell-btn").addEventListener ("click", AllAutoClickButton , false);
+        }else{
+            console.log('Not Valid Direction');
+        }
+    }
 
     var allauto = 0;
     //--- Activate the newly added button.
@@ -31,17 +54,25 @@
     function AllAuto(){
         $('#reload_menu').click();
         setTimeout(function(){
+                console.log("One Operation");
                 MarketBuyer();
             }, 0);
-        setTimeout(function(){
-               MarketSeller();
+        if(parseInt($('#every-resource').val()) >= 2){
+            setTimeout(function(){
+                console.log('Third Operation');
+                MarketBuyer();
             }, 3000);
+        }
         setTimeout(function(){
-               MarketBuyer();
+            console.log("Sell Operation");
+            MarketSeller();
             }, 7000);
-        setTimeout(function(){
-               MarketBuyer();
+        if(parseInt($('#every-resource').val()) >= 3){
+            setTimeout(function(){
+                console.log('4 Operation');
+                MarketBuyer();
             }, 10000);
+        }
     }
 
     function MarketSeller () {
