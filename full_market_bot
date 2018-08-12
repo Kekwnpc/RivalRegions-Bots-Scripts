@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions Market Bot
 // @namespace    http://tampermonkey.net/
-// @version      2.0.0
+// @version      2.0.1
 // @description  Requiere AutoSell y AutoBuyer
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -97,17 +97,17 @@
 
     function MarketBuyer () {
         console.log('Start-Buyer');
-        var money = $('#money span').html().replace(/\./g, '');
-        var resource = document.getElementById('all-resource');
-        var maxPrice = document.getElementById('all-maxPrice');
+        var money = parseInt($('#money span').html().replace(/\./g, ''));
+        var resource = parseInt(document.getElementById('all-resource').value);
+        var maxPrice = parseInt(document.getElementById('all-maxPrice').value);
 
         $('.storage_item[url='+resource.value+']').click();
         setTimeout(function(){
-            var currentPrice = $('.storage_price span span').html().substr(0, $('.storage_price span span').html().indexOf(' ')).replace(/\./g, '');
-            if (currentPrice <= maxPrice.value){
+            var currentPrice = parseInt($('.storage_price span span').html().substr(0, $('.storage_price span span').html().indexOf(' ')).replace(/\./g, ''));
+            if (currentPrice <= maxPrice){
                 // seller quantity
                 var buyable = 0;
-                var sellerSells = $('.storage_market_number').html().replace(/\./g, '');
+                var sellerSells = parseInt($('.storage_market_number').html().replace(/\./g, ''));
                 // max money buying
                 var canBuyWithMoney = Math.trunc(money / currentPrice);
                 if(sellerSells > canBuyWithMoney){
@@ -120,7 +120,7 @@
                 $('.storage_buy_button').click();
                 console.warn('Comprado: '+sellerSells+' a '+currentPrice);
             }
-        }, 1000);
+        }, 1500);
         console.log('End-Buyer');
     }
 
