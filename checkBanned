@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - BannedList
 // @namespace    http://discord.gg/DtQQAZd
-// @version      0.7
+// @version      0.8
 // @description  WorkPermit BannedList
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -13,6 +13,14 @@
 
 (function() {
     'use strict';
+
+    $( document ).ajaxComplete(function() {
+        let pathname = window.location.href.substring(window.location.href.indexOf("#")+1);
+        if (pathname != 'leader/requests' || pathname != 'leader/requests_canceled' && $( "#residence" ).length){
+            $( "#residence" ).remove();
+        }
+    });
+
     var auth_token = '';
     var current_user_id = 0;
 
@@ -30,25 +38,46 @@
         var pathname = window.location.href;
         pathname = pathname.substring(pathname.indexOf("#")+1);
         console.log(pathname);
-        if (pathname == 'leader/requests' || pathname == 'leader/requests_canceled'){
-            $("#slide_close").next().after('<div id="residence" style="width:750px;margin:auto;" class="ib tc"><h3>Residence BlackList</h3>'+
-                                           '<div style="padding:10px;width:20%;display:inline-block;">Lists where i follow</div>'+
-                                           '<div style="padding:10px;width:70%;display:inline-block;"><span id="MyLists"><span class="list_1">13433_Espiña<img onclick="deletelist(\'list_1\')" style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>&nbsp; <span class="list_1">11323_NOS<img onclick="deletelist(\'list_1\')" style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>&nbsp; </div>'+
-                                           '<div style="padding:10px;width:20%;display:inline-block;">Join a new List</div>'+
-                                           '<div style="padding:10px;width:30%;display:inline-block;"><input type="text" id="new_list"></div>'+
-                                           '<div style="padding:10px;width:30%;display:inline-block;"><span class="button_red" id="checkEspiñaList">Apply BlackList</span></div>'+
+        if ((pathname == 'leader/requests' || pathname == 'leader/requests_canceled') && !$( "#residence" ).length){
+            var list = GM_getValue('list', '');
+
+            $("#slide_close").next().after('<div id="residence" style="padding:25px;width:750px;margin:auto;" class="ib tc"><h3>Residence BlackList</h3>'+
+                                           '<div style="width:20%;display:inline-block;">Lists where i follow</div>'+
+                                           '<div style="width:70%;display:inline-block;"><span id="MyLists"><span class="list_1">13433_Espiña<img onclick="deletelist(\'list_1\')" style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>&nbsp; <span class="list_1">11323_NOS<img onclick="deletelist(\'list_1\')" style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>&nbsp; </div>'+
+                                           '<div style="width:20%;display:inline-block;">Join a new List</div>'+
+                                           '<div style="width:50%;display:inline-block;"><input type="text" id="new_list"> <span class="button_red" id="joinList">Join List</span></div>'+
+                                           '<span style="width:30%;display:inline-block" class="button_red" id="checkEspiñaList">Apply BlackList</span>'+
                                            '</div>');
             document.getElementById ("checkEspiñaList").addEventListener ("click", checkBann, false);
+            document.getElementById ("joinList").addEventListener ("click", registerList, false);
+        }else if($( "#residence" ).length){
+            $( "#residence" ).remove();
         }else{
             console.log('Not Valid Direction');
         }
     }
 
     function registerList(){
+        var list = GM_getValue('list', '');
+        var newValue = $('#new_list').val();
+        console.log(list);
+        if(!list.indexOf(newValue)){
+            list = list.length ? list + ';'+newValue : newValue;
+        }
+        console.log(list);
+        GM_setValue('list', list);
+    }
 
+    function deleteFromList(){
+        //
+    }
+
+    function checkAllLists(){
+        console.log('Before doing anything, check all lists if they are on server');
     }
 
     function checkBann(){
+    checkAllLists();
     $.getJSON( "https://rawgit.com/Kytoh/MyBots/master/banned_list", function( data ) {
         var Bannedlist = data;
 
