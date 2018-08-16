@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Rival Regions Market Bot
+// @name         Rival Regions - Market Bot
 // @namespace    http://tampermonkey.net/
-// @version      2.1.0
+// @version      2.2.0
 // @description  Requiere AutoSell y AutoBuyer
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -15,18 +15,10 @@
     $( document ).ajaxComplete(function() {
         if (window.location.href.substring(window.location.href.indexOf("#")+1) != 'storage' && $( "#nyancatnyancat" ).length){
             $( "#nyancatnyancat" ).remove();
+        }else if(window.location.href.substring(window.location.href.indexOf("#")+1) == 'storage' && !$( "#nyancatnyancat" ).length){
+            insertBanner();
         }
     });
-
-
-    var zNode       = document.createElement ('div');
-    zNode.innerHTML = '<button title="Start Market Bot" class="btn" id="MarketBot-btn" type="button">Market Bot</button>';
-    zNode.setAttribute ('id', 'learner-container');
-    zNode.setAttribute ('style', 'z-index:9999999;position:absolute;bottom:100px;color:white');
-    document.body.appendChild (zNode);
-
-        //--- Activate the newly added button.
-    document.getElementById ("MarketBot-btn").addEventListener ("click", insertBanner, false);
 
     function insertBanner(){
         var pathname = window.location.href;
@@ -47,10 +39,6 @@
                                            '<div style="padding:10px;width:15%;display:inline-block;"><span class="button_red" id="buy-and-sell-btn">Start Bot</span></div>'+
                                            '</div>');
             document.getElementById ("buy-and-sell-btn").addEventListener ("click", AllAutoClickButton , false);
-        }else if($( "#nyancatnyancat" ).length){
-            $( "#nyancatnyancat" ).remove();
-        }else{
-            console.log('Not Valid Direction');
         }
     }
 
