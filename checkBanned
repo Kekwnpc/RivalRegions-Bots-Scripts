@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - BannedList
 // @namespace    http://discord.gg/DtQQAZd
-// @version      0.9
+// @version      0.10
 // @description  WorkPermit BannedList
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -18,7 +18,9 @@
         let pathname = window.location.href.substring(window.location.href.indexOf("#")+1);
         if((pathname == 'leader/requests' || pathname == 'leader/requests_canceled') && !$( "#residence" ).length){
             insertBanner();
-        }else if ((pathname != 'leader/requests' || pathname != 'leader/requests_canceled')){
+        }else if (window.location.href.substring(25,39) == 'slide/profile/' && !$("#profile_checker").length){
+            profileDataFix();
+        }else{
             return false;
         }
     });
@@ -31,36 +33,70 @@
         pathname = pathname.substring(pathname.indexOf("#")+1);
         console.log(pathname);
         if ((pathname == 'leader/requests' || pathname == 'leader/requests_canceled') && !$( "#residence" ).length){
-            var list = GM_getValue('list', '');
+            let list = getElementLists();
             $("#slide_close").next().after('<div id="residence" style="padding:25px;width:750px;margin:auto;" class="ib tc"><h3>Residence BlackList</h3>'+
                                            '<div style="width:20%;display:inline-block;">Lists where i follow</div>'+
-                                           '<div style="width:70%;display:inline-block;"><span id="MyLists"><span class="list_1">13433_Espiña<img onclick="deletelist(\'list_1\')" style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>&nbsp; <span class="list_1">11323_NOS<img onclick="deletelist(\'list_1\')" style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>&nbsp; </div>'+
+                                           '<div style="width:70%;display:inline-block;"><span id="MyLists">'+list+'</div>'+
                                            '<div style="width:20%;display:inline-block;">Join a new List</div>'+
                                            '<div style="width:50%;display:inline-block;"><input type="text" id="new_list"> <span class="button_red" id="joinList">Join List</span></div>'+
                                            '<span style="width:30%;display:inline-block" class="button_red" id="checkEspiñaList">Apply BlackList</span>'+
                                            '</div>');
-            document.getElementById ("checkEspiñaList").addEventListener ("click", checkBann, false);
-            document.getElementById ("joinList").addEventListener ("click", registerList, false);
+            setTimeout(function(){
+                document.getElementById ("checkEspiñaList").addEventListener ("click", checkBann, false);
+                document.getElementById ("joinList").addEventListener ("click", registerList, false);
+                var classname = document.getElementsByClassName("deleteFromList");
+                for (var i = 0; i < classname.length; i++) {
+                    classname[i].addEventListener('click', deleteFromList, false);
+                }
+            }, 3000);
         }
     }
 
     function registerList(){
         var list = GM_getValue('list', '');
         var newValue = $('#new_list').val();
-        console.log(list);
-        if(!list.indexOf(newValue)){
-            list = list.length ? list + ';'+newValue : newValue;
+        if(list.indexOf(newValue) == '-1'){
+            list = list.length ? list+';'+newValue : newValue;
         }
-        console.log(list);
         GM_setValue('list', list);
+        $("#MyLists").html(getElementLists());
+        $('#new_list').val('');
     }
 
-    function deleteFromList(){
-        //
+    function getElementLists(){
+        let list = GM_getValue('list', '');
+        let nyancat = '';
+        list.split(';').forEach(function(element){
+            nyancat = nyancat + '<span class="deleteFromList" data-list="'+element+'">'+element+'<img style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>';
+        });
+        return nyancat;
+    }
+
+    var deleteFromList = function(){
+        console.log('deleteFromList');
+        var list = GM_getValue('list', '');
+        console.log(list);
+        var removeValue = $(this).data('list');
+        console.log(removeValue);
+        if(list.indexOf(removeValue) != '-1'){
+            console.log('Found');
+            list = list.replace(removeValue, '').replace(';;',';').replace(/;\s*$/, "");
+        }else console.log('Not Found');
+        console.log(list);
+        GM_setValue('list', list);
+        $("#MyLists").html(getElementLists());
     }
 
     function checkAllLists(){
         console.log('Before doing anything, check all lists if they are on server');
+    }
+
+    function profileDataFix(){
+        $(".medals_wrap").prepend('<div id="profile_checker" class="float_right" style="width: 180px;padding-bottom:10px;left: -30px;position: relative;"><span style="color:white;font-size:16px;">Residence Blacklist</span><br/></div>');
+        var list = GM_getValue('list', '');
+        list.split(';').forEach(function(element){
+            $("#profile_checker").append('<span style="color:white;font-size:16px;">'+element+'</span><br/><span style="width:60px;" class="button_green">Allow</span><span style="width:60px;" class="button_red">Reject</span><br/>');
+        });
     }
 
     function checkBann(){
