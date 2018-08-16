@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - BannedList
 // @namespace    http://discord.gg/DtQQAZd
-// @version      0.8
+// @version      0.9
 // @description  WorkPermit BannedList
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -16,23 +16,15 @@
 
     $( document ).ajaxComplete(function() {
         let pathname = window.location.href.substring(window.location.href.indexOf("#")+1);
-        if (pathname != 'leader/requests' || pathname != 'leader/requests_canceled' && $( "#residence" ).length){
-            $( "#residence" ).remove();
+        if((pathname == 'leader/requests' || pathname == 'leader/requests_canceled') && !$( "#residence" ).length){
+            insertBanner();
+        }else if ((pathname != 'leader/requests' || pathname != 'leader/requests_canceled')){
+            return false;
         }
     });
 
     var auth_token = '';
     var current_user_id = 0;
-
-    var zNode       = document.createElement ('div');
-    zNode.innerHTML = '<button title="Load Residence BlackList" class="btn" id="CheckerBanned-btn" type="button">Residence BlackList</button>';
-
-    zNode.setAttribute ('id', 'learner-container');
-    zNode.setAttribute ('style', 'z-index:9999999;position:absolute;bottom:200px;color:white');
-    document.body.appendChild (zNode);
-
-    //--- Activate the newly added button.
-    document.getElementById ("CheckerBanned-btn").addEventListener ("click", insertBanner, false);
 
     function insertBanner(){
         var pathname = window.location.href;
@@ -40,7 +32,6 @@
         console.log(pathname);
         if ((pathname == 'leader/requests' || pathname == 'leader/requests_canceled') && !$( "#residence" ).length){
             var list = GM_getValue('list', '');
-
             $("#slide_close").next().after('<div id="residence" style="padding:25px;width:750px;margin:auto;" class="ib tc"><h3>Residence BlackList</h3>'+
                                            '<div style="width:20%;display:inline-block;">Lists where i follow</div>'+
                                            '<div style="width:70%;display:inline-block;"><span id="MyLists"><span class="list_1">13433_Espiña<img onclick="deletelist(\'list_1\')" style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>&nbsp; <span class="list_1">11323_NOS<img onclick="deletelist(\'list_1\')" style="width:15px;height:16px" src="https://discordapp.com/assets/b1868d829b37f0a81533ededb9ffe5f4.svg"></span>&nbsp; </div>'+
@@ -50,10 +41,6 @@
                                            '</div>');
             document.getElementById ("checkEspiñaList").addEventListener ("click", checkBann, false);
             document.getElementById ("joinList").addEventListener ("click", registerList, false);
-        }else if($( "#residence" ).length){
-            $( "#residence" ).remove();
-        }else{
-            console.log('Not Valid Direction');
         }
     }
 
