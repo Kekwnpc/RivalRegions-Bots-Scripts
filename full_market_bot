@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - Market Bot
 // @namespace    http://tampermonkey.net/
-// @version      2.2.0
+// @version      2.2.1
 // @description  Requiere AutoSell y AutoBuyer
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -25,13 +25,13 @@
         pathname = pathname.substring(pathname.indexOf("#")+1);
         console.log(pathname);
         if (pathname == 'storage' && !$( "#nyancatnyancat" ).length){
-            $(".konf_maker").parent().before('<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Full Market Bot</h1>'+
+            $(".konf_maker").parent().before('<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Full Market Bot (v2.2.1)</h1>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">OE 12 Secs</div>'+
                                            '<div style="padding:10px;width:70%;display:inline-block;"><select id="every-resource"><option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option><option value="2">3 Operations Every 12 Seconds (2 Buy + 1 Sell) </option><option value="3">4 Operations Every 12 Seconds (3 Buy + 1 Sell) </option></select></div>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">Resource to Work On</div>'+
                                            '<div style="padding:10px;width:70%;display:inline-block;"><select id="all-resource">'+
                                              '<optgroup label="Resources"><option value="3">Petrol/Oil</option><option value="4">Mineral/Rocks</option><option value="11">Uranium</option><option value="15">Diamonds</option><option value="21">Liquid O2</option><option value="24">H3</option></optgroup>'+
-                                             '<optgroup label="Items"><option value="13">Antirad</option><option value="20">Stellar Ships</option><option value="20">Stellar Ships</option></optgroup>'+
+                                             '<optgroup label="Items"><option value="13">Antirad</option><option value="20">Stellar Ships</option></optgroup>'+
                                              '<optgroup label="Weapons"><option value="2">Tanks</option><option value="1">Planes</option><option value="14">Missile</option><option value="16">Bombership</option><option value="18">Battleship</option><option value="22">Lunar Tank</option><option value="23">Spacial Station</option><</optgroup>'+
                                              '</select></div>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">Pricing</div>'+
