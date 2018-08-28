@@ -1,19 +1,20 @@
 // ==UserScript==
 // @name         Rival Regions - AutoLearn
-// @namespace    http://tampermonkey.net/
-// @version      0.4
+// @namespace    http://discord.gg/DtQQAZd
+// @version      0.6
 // @description  Nyancat
 // @author       You
 // @match        http://rivalregions.com
 // @grant        none
+// @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/new_bot_autolearn
 // ==/UserScript==
 
 (function() {
     'use strict';
     var zNode       = document.createElement ('div');
     zNode.innerHTML = '<button title="AutoLearner" class="btn" id="autolearn-btn" type="button">AutoLearn!</button>'+
-        '<select id="all-educate"><option value="3">Resistencia</option><option value="2">Educación</option><option value="1">Fuerza</option></select>'+
-        '<select id="all-gold"><option value="1">Pago en Dinero</option><option value="2">Pago con Oro</option></select>'+
+        '<select id="all-educate"><option value="3">Endurance</option><option value="2">Education</option><option value="1">Strength</option></select>'+
+        '<select id="all-gold"><option value="1">Pago with Money</option><option value="2">Pay with Gold</option></select>'+
         '<span id="all-learnerbot" style="display:none;background: white;width: 250px;height: 250px;line-height: 250px;position: absolute;top: -600px;text-align:  center;color: red;">LEARNER Bot ACTIVADO</span>';
 
     zNode.setAttribute ('id', 'learner-container');
