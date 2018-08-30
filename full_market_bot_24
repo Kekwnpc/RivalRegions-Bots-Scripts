@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - Market Bot
 // @namespace    http://discord.gg/DtQQAZd
-// @version      2.4.6
+// @version      2.4.8
 // @description  Requiere AutoSell y AutoBuyer
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -25,7 +25,7 @@
         pathname = pathname.substring(pathname.indexOf("#")+1);
         console.log(pathname);
         if (pathname == 'storage' && !$( "#nyancatnyancat" ).length){
-            $(".konf_maker").parent().before('<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Full Market Bot (v2.4.6)</h1>'+
+            $(".konf_maker").parent().before('<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Full Market Bot (v2.4.8)</h1>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">OE 12 Secs</div>'+
                                            '<div style="padding:10px;width:70%;display:inline-block;"><select id="every-resource"><option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option><option value="2">3 Operations Every 12 Seconds (2 Buy + 1 Sell) </option><option value="3">4 Operations Every 12 Seconds (3 Buy + 1 Sell) </option></select></div>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">Resource to Work On</div>'+
@@ -72,7 +72,7 @@
     }
 
     function MarketSeller () {
-        var maxSellAmmount = {3: 204800000,4: 204800000, 11:15360000, 15:153600};
+        var maxSellAmmount = {3: 204800000,4: 204800000, 11:15360000, 15:153600, 21: 38400000, 24: 153600, 13: 76800, 20: 3840, 2: 4388571, 1: 640000,14: 256000, 16:128000, 18:128000, 22:12800, 23:1280 };
         var resource = document.getElementById('all-resource').value;
         var sellerPrice = document.getElementById('all-sellerPrice').value;
         var sellerAmmount = maxSellAmmount[resource];
@@ -109,13 +109,13 @@
                     buyable = sellerSells - 100;
                 }
                 // Lets buy now
-                if (buyable != 0){
+                if (buyable > 0){
                     $('.storage_buy_input').val(buyable);
                     setTimeout(function(){
                         $('.storage_buy_button').click();
                         var dt = new Date();
                         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
-                        vlog('['+ time +'] bought '+sellerSells+' '+$('#all-resource :selected').html()+' at '+currentPrice+'€');
+                        vlog('['+ time +'] bought '+ buyable +' '+$('#all-resource :selected').html()+' at '+currentPrice+'€');
                     }, 300);
                 }
             }
