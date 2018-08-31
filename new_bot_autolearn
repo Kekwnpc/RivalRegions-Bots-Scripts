@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - AutoLearn
 // @namespace    http://discord.gg/DtQQAZd
-// @version      1.0.0
+// @version      1.0.1
 // @description  Nyancat
 // @author       You
 // @match        http://rivalregions.com
@@ -12,34 +12,41 @@
 (function() {
     'use strict';
 
+    var perkauto = 0;
+
     $( document ).ajaxComplete(function() {
-        if(window.location.href.substring(window.location.href.indexOf("#")+1) == 'overview' && perkauto == 0 && !$('#learnerbot').length){
-            insertBanner();
-        }else if(window.location.href.substring(window.location.href.indexOf("#")+1) == 'overview' && perkauto == 1 && !$('#learnerbot').length){
+        if (window.location.href.substring(window.location.href.indexOf("#")+1) != 'overview' && $( "#nindex_history" ).length){
+           $('#index_history').remove();
+        }else if(window.location.href.substring(window.location.href.indexOf("#")+1) == 'overview' && perkauto == 0 && !$('#nindex_history').length){
+            insertBannerLearn();
+        }else if(window.location.href.substring(window.location.href.indexOf("#")+1) == 'overview' && perkauto == 1 && !$('#runnninng').length){
             insertOnLoad();
         }
     });
 
-    function insertBanner(){
-        $('#index_soldier').remove();
-        $('#index_history .in_32').html('Learner Bot (1.0.0)');
-        if($( "#learnerbot" ).length) $("#learnerbot").remove();
-        $('#index_history').removeAttr('action').removeClass('header_buttons_hover').removeClass('pointer').append('<span id="learnerbot"><span class="button_red" id="autolearn-btn">Start learning as a Hacker</span>'+
-                                                                                                                   '<select class="select_dd_paper dd-select" style="width:100%;background:#252525;border:1px solid white;color:white" id="all-educate"><option value="3">Endurance</option><option value="2">Education</option><option value="1">Strength</option></select>'+
-                                                                                                                   '<select class="select_dd_paper dd-select" style="width:100%;background:#252525;border:1px solid white;color:white" id="all-gold"><option value="1">Pay with Money</option><option value="2">Pay with Gold</option></select>'+
-                                                                                                                   '</span>');
-        document.getElementById ("autolearn-btn").addEventListener ("click", LearnerStatus, false);
+    function insertBannerLearn(){
+        var pathname = window.location.href;
+        pathname = pathname.substring(pathname.indexOf("#")+1);
+        if (pathname == 'overview' && !$( "#nindex_history" ).length){
+            $('#index_soldier').remove();
+            $('#index_history .in_32').html('Learner Bot (1.0.1)');
+            if($( "#learnerbot" ).length) $("#nindex_history").remove();
+            $('#index_history').removeAttr('action').removeClass('header_buttons_hover').removeClass('pointer').append('<span id="nindex_history"><span class="button_red" id="autolearn-btn">Start learning as a Hacker</span>'+
+                                                                                                                       '<select class="select_dd_paper dd-select" style="width:100%;background:#252525;border:1px solid white;color:white" id="all-educate"><option value="3">Endurance</option><option value="2">Education</option><option value="1">Strength</option></select>'+
+                                                                                                                       '<select class="select_dd_paper dd-select" style="width:100%;background:#252525;border:1px solid white;color:white" id="all-gold"><option value="1">Pay with Money</option><option value="2">Pay with Gold</option></select>'+
+                                                                                                                       '</span>');
+            if($('#index_history').length) document.getElementById ("autolearn-btn").addEventListener ("click", LearnerStatus, false);
+        }
     }
     function insertOnLoad(){
         $('#index_soldier').remove();
         if($( "#learnerbot" ).length) $("#learnerbot").remove();
         $('#index_history').removeAttr('action').removeClass('header_buttons_hover').removeClass('pointer').append('<span id="learnerbot"><span class="button_red" id="autolearn-btn">Stop learning as a Hacker</span>'+
-                                                                                                                   '<div style="display:block;background:#a01010;color:white;width:100%;height:100%;text-align:center;vertical-align:middle;line-height:40px;">Running</div>'+
+                                                                                                                   '<div id="runnninng" style="display:block;background:#a01010;color:white;width:100%;height:100%;text-align:center;vertical-align:middle;line-height:40px;">Running</div>'+
                                                                                                                    '</span>');
-        document.getElementById ("autolearn-btn").addEventListener ("click", LearnerStatus, false);
+        if($('#index_history').length) document.getElementById ("autolearn-btn").addEventListener ("click", LearnerStatus, false);
     }
 
-    var perkauto = 0;
     var a1, a2, a3, a4, perk, gold;
     var vdate = Date.now();
     //--- Activate the newly added button.
@@ -49,7 +56,7 @@
             console.log('Starting Bot...');
             perk = document.getElementById('all-educate').value;
             gold = document.getElementById('all-gold').value;
-            AllAutoClickButton();
+            AllLearnClickButton();
             perkauto=1;
         }else{
             console.log('Stopping Bot...');
@@ -62,7 +69,7 @@
         }
     }
 
-    function AllAutoClickButton(){
+    function AllLearnClickButton(){
         var nextTime = 10000;
 
         a1 = setTimeout(function(){
