@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Rival Regions - Lister 2 CSV
-// @namespace    http://tampermonkey.net/
+// @namespace    http://discord.gg/DtQQAZd
 // @version      0.2
 // @description  Donator table to CSV
-// @author       You
+// @author       KCSystem
 // @match        http://rivalregions.com
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/List2CSV
