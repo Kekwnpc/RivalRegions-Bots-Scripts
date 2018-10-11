@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - Lister 2 CSV
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Donator table to CSV
 // @author       You
 // @match        http://rivalregions.com
