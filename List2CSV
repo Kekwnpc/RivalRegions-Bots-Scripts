@@ -6,6 +6,7 @@
 // @author       You
 // @match        http://rivalregions.com
 // @grant        none
+// @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/List2CSV
 // ==/UserScript==
 
 (function() {
