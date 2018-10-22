@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Rival Regions - AutoLearn
 // @namespace    http://discord.gg/DtQQAZd
-// @version      1.0.1
+// @version      1.0.2
 // @description  Nyancat
 // @author       You
 // @match        http://rivalregions.com
+// @match        https://rivalregions.com
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/new_bot_autolearn
 // ==/UserScript==
