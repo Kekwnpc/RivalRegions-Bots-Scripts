@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Rival Regions - Lister 2 CSV
 // @namespace    http://discord.gg/DtQQAZd
-// @version      0.2
+// @version      0.4
 // @description  Donator table to CSV
 // @author       KCSystem
 // @match        http://rivalregions.com
+// @match        https://rivalregions.com
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/List2CSV
 // ==/UserScript==
@@ -12,17 +13,18 @@
 (function() {
     'use strict';
 
-    $( document ).ajaxComplete(function() {
-        if (window.location.href.substring(window.location.href.indexOf("#")+1, window.location.href.indexOf("/", window.location.href.indexOf("#")+1)) != 'listed' && $( "#nyancat-donator" ).length){
+    $( document ).ajaxComplete(function(){
+        let link= window.location.href.substring(window.location.href.indexOf("#")+1, window.location.href.indexOf("/", window.location.href.indexOf("#")+1));
+        if ( (link != 'listed' || link != 'war') && $( "#nyancat-donator" ).length){
             $( "#nyancat-donator" ).remove();
-        }else if(window.location.href.substring(window.location.href.indexOf("#")+1, window.location.href.indexOf("/", window.location.href.indexOf("#")+1)) == 'listed' && !$( "#nyancat-donator" ).length){
+        }else if( (link != 'listed' || link != 'war') && !$( "#nyancat-donator" ).length){
             insertBanner();
         }
     });
 
     function insertBanner(){
         var pathname = window.location.href.substring(window.location.href.indexOf("#")+1, window.location.href.indexOf("/", window.location.href.indexOf("#")+1));
-        if (pathname == 'listed' && !$( "#nyancat-donator" ).length){
+        if ( (pathname != 'listed' || pathname != 'war') && !$( "#nyancat-donator" ).length){
          $("#header_slide_inner").before('<div id="nyancat-donator" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Donator List to CSV (v0.1.0)</h1>'+
                                            '<div style="padding:10px;width:15%;display:inline-block;"><span class="button_red" id="buy-and-sell-btn">Execute</span></div>'+
                                            '<textarea id="nyancat-donatetext"/>'+
