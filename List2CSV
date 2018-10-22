@@ -2,7 +2,7 @@
 // @name         Rival Regions - Lister 2 CSV
 // @namespace    http://discord.gg/DtQQAZd
 // @version      0.4
-// @description  Donator table to CSV
+// @description  Table to CSV (Valid for #listed and #war pages)
 // @author       KCSystem
 // @match        http://rivalregions.com
 // @match        https://rivalregions.com
