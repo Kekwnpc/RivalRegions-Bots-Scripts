@@ -8,7 +8,7 @@
 // @match        https://rivalregions.com
 // @grant        none
 // @requiere     https://code.jquery.com/ui/1.12.1/jquery-ui.js
-// @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/full_market_bot_24
+// @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/full_market_bot_3
 // ==/UserScript==
 
 (function() {
