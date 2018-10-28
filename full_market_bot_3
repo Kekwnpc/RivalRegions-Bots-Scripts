@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - Market Bot
 // @namespace    http://discord.gg/DtQQAZd
-// @version      3.0.0
+// @version      3.0.1
 // @description  Requiere AutoSell y AutoBuyer
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    var app_version = 'v3.0.0';
+    var app_version = 'v3.0.1';
 
     $( document ).ajaxComplete(function() {
         if (window.location.href.substring(window.location.href.indexOf("#")+1) != 'storage' && $( "#nyancatnyancat" ).length){
@@ -94,19 +94,21 @@
         var sellerMargin = parseInt(document.getElementById('all-sellerMargin').value);
 
         $('.storage_item[url='+resource+']').click();
-        setTimeout(function(){
-            var currentPrice = parseInt($(".storage_price span span").html().substr(0, $(".storage_price span span").html().indexOf(" ")));
-            if(sellerMargin == 1 && currentPrice > sellerPrice){
-              sellerPrice = currentPrice - 1;
-              vlog('Raised/Reduced pricing to '+sellerPrice+'$');
-            }
-            $(".storage_sell").click();
+        if($(".storage_countdown.hasCountdown").length == 0){
             setTimeout(function(){
-                $(".storage_sell_price").val(sellerPrice);
-                $('.storage_sell_button').removeClass("no_pointer").removeClass("button_red").addClass("button_green");
-                $('.storage_sell_button').click();
+                var currentPrice = parseInt($(".storage_price span span").html().substr(0, $(".storage_price span span").html().indexOf(" ")));
+                if(sellerMargin == 1 && currentPrice > sellerPrice){
+                    sellerPrice = currentPrice - 1;
+                    vlog('Raised/Reduced pricing to '+sellerPrice+'$');
+                }
+                $(".storage_sell").click();
+                setTimeout(function(){
+                    $(".storage_sell_price").val(sellerPrice);
+                    $('.storage_sell_button').removeClass("no_pointer").removeClass("button_red").addClass("button_green");
+                    $('.storage_sell_button').click();
+                }, 1000);
             }, 1000);
-        }, 1000);
+        }
     }
 
     function MarketBuyer () {
