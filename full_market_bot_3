@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - Market Bot
 // @namespace    http://discord.gg/DtQQAZd
-// @version      3.0.1
+// @version      3.0.2
 // @description  Requiere AutoSell y AutoBuyer
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -138,9 +138,9 @@
                 // max money buying
                 var canBuyWithMoney = Math.trunc(money / maxPrice);
                 if(sellerSells > canBuyWithMoney){
-                    buyable = canBuyWithMoney - 100;
+                    buyable = canBuyWithMoney;
                 }else{
-                    buyable = sellerSells - 100;
+                    buyable = sellerSells;
                 }
                 // Lets buy now
                 if (buyable > 0){
