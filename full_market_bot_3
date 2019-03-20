@@ -29,7 +29,7 @@
         pathname = pathname.substring(pathname.indexOf("#")+1);
         console.log(pathname);
         if (pathname == 'storage' && !$( "#nyancatnyancat" ).length){
-            $(".konf_maker").parent().before('<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Full Market Bot ('+app_version+')</h1>'+
+            $(".konf_maker").parent().before('<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Full Market Bot('+app_version+')</h1>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">OE 12 Secs</div>'+
                                            '<div style="padding:10px;width:70%;display:inline-block;"><select id="every-resource"><option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option><option value="2">3 Operations Every 12 Seconds (2 Buy + 1 Sell) </option><option value="3">4 Operations Every 12 Seconds (3 Buy + 1 Sell) </option></select></div>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">Resource to Work On</div>'+
@@ -51,7 +51,7 @@
                                               '<optgroup label="Items / Weapons"><option value="100">+100</option><option value="250">+250</option><option value="500>+500</option><option value="1000">+1.000</option><option value="5000">+5.000</option><option value="10000">+10.000</option><option value="25">+25.000</option><option value="50000">+50.000</option><option value="100000">+100.000</option></optgroup>'+
                                               '</select><br/>'+
                                            '</div>'+
-                                           '<div style="padding:10px;width:15%;display:inline-block;"><span class="button_red" id="buy-and-sell-btn">Start / Stop Bot</span></div>'+
+                                           '<div style="padding:10px;width:15%;display:inline-block;"><span class="button_red" id="buy-and-sell-btn">Start / Stop Bot</span></div> <br>This bot developed on AlphaBay. If you did not bought there, you have been scammed.'+
                                            '</div>'+
                                            '<div id="botEnabled" style="display:none;text-align:center;color:red;margin-top:5px;width:750px;margin-left:auto;margin-right:auto;" class="ib tc"></div>'+
                                            '<div id="botLog" style="display:none;text-align:center;width:750px;margin-left:auto;margin-right:auto;" class="ib tc"></div>');
