@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - Market Bot
 // @namespace    http://discord.gg/DtQQAZd
-// @version      2.4.10
+// @version      2.4.11
 // @description  Requiere AutoSell y AutoBuyer
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -26,7 +26,7 @@
         pathname = pathname.substring(pathname.indexOf("#")+1);
         console.log(pathname);
         if (pathname == 'storage' && !$( "#nyancatnyancat" ).length){
-            $(".konf_maker").parent().before('<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Full Market Bot (v2.4.9)</h1>'+
+            $(".konf_maker").parent().before('<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Full Market Bot (v2.4.11)</h1>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">OE 12 Secs</div>'+
                                            '<div style="padding:10px;width:70%;display:inline-block;"><select id="every-resource"><option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option><option value="2">3 Operations Every 12 Seconds (2 Buy + 1 Sell) </option><option value="3">4 Operations Every 12 Seconds (3 Buy + 1 Sell) </option></select></div>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">Resource to Work On</div>'+
