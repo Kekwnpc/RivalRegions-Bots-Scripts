@@ -12,6 +12,7 @@
 /*
 Changes 3.1.1 - 27 March 2019
 - [FIX] Rounded at two decimals the crazy limit.
+- [FIX] Fix the array that held the latest pricing. Now will delete if you select a lower time limit.
 
 Changes 3.1.0 - 27 March 2019
 - [ADD] Added Market Crazyness feature. Now the bought price will be restricted if there is an unexpected rise of the pricing. Bot will be still selling but wont buy until the timing.
@@ -70,10 +71,10 @@ Changes 2.4.7 - 30 August 2018
     function insertBanner(){
         var pathname = window.location.href;
         pathname = pathname.substring(pathname.indexOf("#")+1);
-        console.log(pathname);
         if (pathname == 'storage' && !$( "#nyancatnyancat" ).length){
             $(".konf_maker").parent().before('<style>input.nyah,select.nyah{float:right;width:250px;}#nyancatnyancat{line-height:1.5em}</style>'+
-                                           '<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;padding-left: 25px;padding-right: 25px" class="ib tc"> <h1 style="text-align:center">AlphaBay Broker Bot ('+app_version+')</h1>'+
+                                           '<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;padding-left: 25px;padding-right: 25px" class="ib tc">'+
+                                             '<h1 style="text-align:center">AlphaBay Broker Bot ('+app_version+')</h1>'+
                                            '<div style="width:600px;display:inline-block;">OE 12 Secs: '+
                                            '<select class="nyah" id="every-resource">'+
                                              '<option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option>'+
@@ -114,7 +115,8 @@ Changes 2.4.7 - 30 August 2018
                                                 '<optgroup label="Resources"><option value="0">0 - No Margin</option><option value="1">+1</option><option value="2">+2</option><option value="5">+5</option><option value="10">+10</option><option value="20">+20</option><option value="25">+25</option><option value="50">+50</option><option value="75">+75</option></optgroup>'+
                                                 '<optgroup label="Items / Weapons"><option value="100">+100</option><option value="250">+250</option><option value="500>+500</option><option value="1000">+1.000</option><option value="5000">+5.000</option><option value="10000">+10.000</option><option value="25">+25.000</option><option value="50000">+50.000</option><option value="100000">+100.000</option></optgroup>'+
                                               '</select><br/>'+
-                                           '<span title="Adapt the crazyness of the market.">Market Crazyness</span> <select class="nyah" id="all-crazynessTime">'+
+                                             '<h3>Market Crazyness</h3>'+
+                                           '<span title="Adapt the crazyness of the market.">Time Crazyness</span> <select class="nyah" id="all-crazynessTime">'+
                                               '<option value="0">0 (Crazy: 0s)</option>'+
                                               '<option value="12">1 (Mad: 12s)</option>'+
                                               '<option value="36">3 (Explosive: 36s)</option>'+
@@ -123,7 +125,7 @@ Changes 2.4.7 - 30 August 2018
                                               '<option value="120">9 (Restricted II: 120s)</option>'+
                                               '<option value="180">10 (Bunker: 180s)</option>'+
                                               '</select><br/>'+
-                                           '<span title="Indicate the margin of the crazy current limit and the real buy price.">Market Crazyness</span> <select class="nyah" id="all-crazynessMargin">'+
+                                           '<span title="Indicate the margin of the crazy current limit and the real buy price.">Margin Crazyness</span> <select class="nyah" id="all-crazynessMargin">'+
                                               '<option value="99">0 (Crazy: No Limit)</option>'+
                                               '<option value="1">1 (Mad: +100%)</option>'+
                                               '<option value="0.75">3 (Explosive: +50%)</option>'+
@@ -221,7 +223,6 @@ Changes 2.4.7 - 30 August 2018
             if (adaptBuy != -1 && !isNaN(sellerPrice) && sellerPrice - maxPrice > adaptBuy){
                 maxPrice = sellerPrice - adaptBuy;
             }
-            console.log(currentBuyPrice+' '+maxPrice+' ');
             if (currentBuyPrice <= maxPrice && currentBuyPrice <= v_control){
                 // seller quantity
                 var buyable = 0;
@@ -250,17 +251,26 @@ Changes 2.4.7 - 30 August 2018
     function checkCrazyNess(){
         var resource = parseInt(document.getElementById('all-resource').value);
         $('.storage_item[url='+resource+']').click();
-        var current = parseInt($('.storage_price span span').html().substr(0, $('.storage_price span span').html().indexOf(' ')).replace(/\./g, ''));
+        let currPrice = $('.storage_price span span').html();
+        if(currPrice != null){
+            var current = parseInt($('.storage_price span span').html().substr(0, currPrice.indexOf(' ')).replace(/\./g, ''));
 
-        // v_crazy
-        // v_control
-        var crazynessMargin = parseFloat(document.getElementById('all-crazynessMargin').value);
-        var crazynessTime = Math.floor(parseInt(document.getElementById('all-crazynessTime').value)/12);
-        if(v_control.length > crazynessTime){
-            v_control.shift();
+            // v_crazy
+            // v_control
+            var crazynessMargin = parseFloat(document.getElementById('all-crazynessMargin').value);
+            var crazynessTime = Math.floor(parseInt(document.getElementById('all-crazynessTime').value)/12);
+            var difff = v_control.length - crazynessTime;
+            if(difff == 0){
+                v_control.shift();
+            }else if(difff > 0){
+                for(let i = 1; i < difff; i++){
+                    v_control.shift();
+                }
+            }
+            v_control.push(current);
+            console.log(v_control);
+            v_crazy = ((v_control.reduce((previous, current) => current += previous))/v_control.length * (1 + crazynessMargin)).toFixed(2);
         }
-        v_control.push(current);
-        v_crazy = ((v_control.reduce((previous, current) => current += previous))/v_control.length * (1 + crazynessMargin)).toFixed(2);
     }
 
     function vlog(message){
