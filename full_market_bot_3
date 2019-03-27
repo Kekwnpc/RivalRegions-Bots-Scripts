@@ -69,8 +69,8 @@ Changes 2.4.7 - 30 August 2018
         pathname = pathname.substring(pathname.indexOf("#")+1);
         console.log(pathname);
         if (pathname == 'storage' && !$( "#nyancatnyancat" ).length){
-            $(".konf_maker").parent().before('<style>input.nyah,select.nyah{float:right}#nyancatnyancat{line-height:1.5em}</style>'+
-                                           '<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;padding: 25px;" class="ib tc"> <h1>AlphaBay Broker Bot('+app_version+')</h1>'+
+            $(".konf_maker").parent().before('<style>input.nyah,select.nyah{float:right;width:250px;}#nyancatnyancat{line-height:1.5em}</style>'+
+                                           '<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;padding-left: 25px;padding-right: 25px" class="ib tc"> <h1 style="text-align:center">AlphaBay Broker Bot ('+app_version+')</h1>'+
                                            '<div style="width:600px;display:inline-block;">OE 12 Secs: '+
                                            '<select class="nyah" id="every-resource">'+
                                              '<option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option>'+
@@ -128,7 +128,7 @@ Changes 2.4.7 - 30 August 2018
                                               '<option selected value="0.25">7 (Restricted: +25%)</option>'+
                                               '<option value="0.15">9 (Restricted II: +15%)</option>'+
                                               '<option value="0.10">10 (Bunker: +10%)</option>'+
-                                             '</select><br/><span>Current Crazyness: <span id="currentCrazy"></span></span><br/>'+
+                                             '</select><br/><span>Current Crazyness: <input type="text" readonly id="currentCrazy"></span><br/>'+
                                              '<div style="padding:10px;width:90%;display:block;"><span style="width:100%;" class="button_red" id="buy-and-sell-btn">Start / Stop Bot</span></div>'+
                                            '</div>'+
                                            '<div style="width:130px;float:right;"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins class="adsbygoogle"style="display:inline-block;width:120px;height:240px" data-ad-client="ca-pub-9618665776321227" data-ad-slot="1558345016"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>'+
@@ -154,24 +154,24 @@ Changes 2.4.7 - 30 August 2018
         $('#reload_menu').click();
         setTimeout(function(){
                 checkCrazyNess();
-                $("#currentCrazy").html(v_crazy);
+                $("#currentCrazy").val(v_crazy);
                 MarketBuyer();
             }, 0);
         setTimeout(function(){
             checkCrazyNess();
-            $("#currentCrazy").html(v_crazy);
+            $("#currentCrazy").val(v_crazy);
             if(parseInt($('#every-resource').val()) >= 2){
                 MarketBuyer();
             }
         }, 3000);
         setTimeout(function(){
             checkCrazyNess();
-            $("#currentCrazy").html(v_crazy);
+            $("#currentCrazy").val(v_crazy);
             MarketSeller();
             }, 7000);
         setTimeout(function(){
             checkCrazyNess();
-            $("#currentCrazy").html(v_crazy);
+            $("#currentCrazy").val(v_crazy);
             if(parseInt($('#every-resource').val()) >= 2){
                 MarketBuyer();
             }
@@ -258,7 +258,6 @@ Changes 2.4.7 - 30 August 2018
         }
         v_control.push(current);
         v_crazy = (v_control.reduce((previous, current) => current += previous))/v_control.length * (1 + crazynessMargin);
-        console.log(v_control);
     }
 
     function vlog(message){
