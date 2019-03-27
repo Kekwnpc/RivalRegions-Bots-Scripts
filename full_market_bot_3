@@ -1,20 +1,60 @@
 // ==UserScript==
-// @name         Rival Regions - Market Bot
+// @name         Rival Regions - AlphaBay Broker Bot
 // @namespace    http://discord.gg/DtQQAZd
-// @version      3.0.3
-// @description  Requiere AutoSell y AutoBuyer
+// @version      3.1.0
+// @description  The only and best broker bot to earn money on the RR user market
 // @author       KCSystem
 // @match        http://rivalregions.com
 // @match        https://rivalregions.com
 // @grant        none
 // @requiere     https://code.jquery.com/ui/1.12.1/jquery-ui.js
 // @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/full_market_bot_3
+/*
+Changes 3.1.0 - 27 March 2019
+- [ADD] Added Market Crazyness feature. Now the bought price will be restricted if there is an unexpected rise of the pricing. Bot will be still selling but wont buy until the timing.
+
+Changes 3.0.3 - 20 March 2019
+- [FIX] Added new purchase adaptations.
+- [MOD] Improved the "AntiBot" feauture to avoid ban.
+- [AB] This versión and on wont be published.
+
+Changes 3.0.2 - 30 December 2018
+- [FIX] Now the bot will buy entire stack less 100, and entire if the quantity is 100 or lower
+
+Changes 3.0.1 - 28 October 2018
+- [FIX] When the cooldown is active, the bot wont try to set a new offer, this reduce the "antibot" feature.
+
+Changes 3.0.0 - 27 October 2018
+- [ADD] Now the bot will raise and reduce the sale pricing looking the current market pricing, never lower than the user sell price. This option can be enabled or disabled.
+- [ADD] Now the bot will raise and reduce the purchase pricing looking the current market pricing, This option can be enabled, disabled and edited with on a select. If the current purchase pricing is lower than the diference between the current market pricing and the margin pricing, will raise its price, otherwise, will mantain the fixed purchase pricing.
+- [ADD] Now works on https url.
+- [FIX] Now buys partially a stack when not enough money to buy a full stack.
+
+Changes 2.4.11 - 20 March 2019
+- AntiScam Message
+- Advertising System
+
+Changes 2.4.10 - 22 October 2018
+- [FIX] Now works on https
+
+Changes 2.4.9 - 22 October 2018
+- [FIX] Changed the text. Instead of "Start Bot" now is "Start/Stop Bot"
+
+Changes 2.4.8 - 31 August 2018
+- [ADD] Now, Bot can sell any item from the warehouse. Until now, any item can be bought but only first line resources can be sold.
+
+Changes 2.4.7 - 30 August 2018
+- [FIX] Now test that more than 0 units can be bought before clicking "Buy"
+- [FIX] Now the log, logs the what quantity is bought instead of what the seller is selling
+
+*/
+
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    var app_version = 'v3.0.3';
+    var app_version = 'v3.1.0';
 
     $( document ).ajaxComplete(function() {
         if (window.location.href.substring(window.location.href.indexOf("#")+1) != 'storage' && $( "#nyancatnyancat" ).length){
@@ -29,29 +69,69 @@
         pathname = pathname.substring(pathname.indexOf("#")+1);
         console.log(pathname);
         if (pathname == 'storage' && !$( "#nyancatnyancat" ).length){
-            $(".konf_maker").parent().before('<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Full Market Bot('+app_version+')</h1>'+
-                                           '<div style="padding:10px;width:20%;display:inline-block;">OE 12 Secs</div>'+
-                                           '<div style="padding:10px;width:70%;display:inline-block;"><select id="every-resource"><option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option><option value="2">3 Operations Every 12 Seconds (2 Buy + 1 Sell) </option><option value="3">4 Operations Every 12 Seconds (3 Buy + 1 Sell) </option></select></div>'+
-                                           '<div style="padding:10px;width:20%;display:inline-block;">Resource to Work On</div>'+
-                                           '<div style="padding:10px;width:70%;display:inline-block;">'+
-                                           '<select id="all-resource">'+
-                                             '<optgroup label="Resources"><option value="3">Petrol/Oil</option><option value="4">Mineral/Rocks</option><option value="11">Uranium</option><option value="15">Diamonds</option><option value="21">Liquid O2</option><option value="24">H3</option></optgroup>'+
-                                             '<optgroup label="Items"><option value="13">Antirad</option><option value="20">Stellar Ships</option></optgroup>'+
-                                             '<optgroup label="Weapons"><option value="2">Tanks</option><option value="1">Planes</option><option value="14">Missile</option><option value="16">Bombership</option><option value="18">Battleship</option><option value="22">Lunar Tank</option><option value="23">Spacial Station</option><</optgroup>'+
-                                             '</select>'+
-                                           '</div>'+
-                                           '<div style="padding:10px;width:20%;display:inline-block;">Pricing</div>'+
-                                           '<div style="padding:10px;width:45%;display:inline-block;">'+
-                                              'Sell Price: <input value="" placeholder="Sell Price" id="all-sellerPrice"/><br/>'+
-                                              '<span title="The price of the resource will rise if the market rises and falls if the price falls, never lower than the indicated value">Adapt sales to Market:</span> <select id="all-sellerMargin"><option value="0">Fixed Pricing</option><option value="1">Raise Automatically</option></select><br/>'+
-                                              'Buy Price: <input value="" placeholder="MAX buy Pricing" id="all-maxPrice"/><br/>'+
-                                              '<span title="Indicates the minimum difference between the sale price and the purchase price">Adapt purchases to market:</span> <select id="all-buySellMargin">'+
-                                              '<option value="-1">Disabled</option>'+
-                                              '<optgroup label="Resources"><option value="0">0 - No Margin</option><option value="1">+1</option><option value="2">+2</option><option value="5">+5</option><option value="10">+10</option><option value="20">+20</option><option value="25">+25</option><option value="50">+50</option><option value="75">+75</option></optgroup>'+
-                                              '<optgroup label="Items / Weapons"><option value="100">+100</option><option value="250">+250</option><option value="500>+500</option><option value="1000">+1.000</option><option value="5000">+5.000</option><option value="10000">+10.000</option><option value="25">+25.000</option><option value="50000">+50.000</option><option value="100000">+100.000</option></optgroup>'+
+            $(".konf_maker").parent().before('<style>input.nyah,select.nyah{float:right}#nyancatnyancat{line-height:1.5em}</style>'+
+                                           '<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;padding: 25px;" class="ib tc"> <h1>AlphaBay Broker Bot('+app_version+')</h1>'+
+                                           '<div style="width:600px;display:inline-block;">OE 12 Secs: '+
+                                           '<select class="nyah" id="every-resource">'+
+                                             '<option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option>'+
+                                             '<option value="2">3 Operations Every 12 Seconds (2 Buy + 1 Sell) </option>'+
+                                             '<option value="3">4 Operations Every 12 Seconds (3 Buy + 1 Sell) </option>'+
+                                             '</select><br/>'+
+                                           'Resource to Work On: '+
+                                           '<select class="nyah" id="all-resource">'+
+                                              '<optgroup label="Resources">'+
+                                                '<option value="3">Petrol/Oil</option>'+
+                                                '<option value="4">Mineral/Rocks</option>'+
+                                                '<option value="11">Uranium</option>'+
+                                                '<option value="15">Diamonds</option>'+
+                                                '<option value="21">Liquid O2</option>'+
+                                                '<option value="24">H3</option>'+
+                                              '</optgroup>'+
+                                              '<optgroup label="Items">'+
+                                                '<option value="13">Antirad</option>'+
+                                                '<option value="20">Stellar Ships</option>'+
+                                              '</optgroup>'+
+                                              '<optgroup label="Weapons">'+
+                                                '<option value="2">Tanks</option>'+
+                                                '<option value="1">Planes</option>'+
+                                                '<option value="14">Missile</option>'+
+                                                '<option value="16">Bombership</option>'+
+                                                '<option value="18">Battleship</option>'+
+                                                '<option value="22">Lunar Tank</option>'+
+                                                '<option value="23">Spacial Station</option>'+
+                                              '</optgroup>'+
+                                             '</select><br/>'+
+                                              'Sell Price: <input class="nyah" value="" placeholder="Sell Price" id="all-sellerPrice"/><br/>'+
+                                              '<span title="The price of the resource will rise if the market rises and falls if the price falls, never lower than the indicated value">Adapt sales to Market:</span>'+
+                                              '<select class="nyah" id="all-sellerMargin"><option value="0">Fixed Pricing</option><option value="1">Raise Automatically</option></select><br/>'+
+                                              'Buy Price: <input class="nyah" value="" placeholder="MAX buy Pricing" id="all-maxPrice"/><br/>'+
+                                              '<span title="Indicates the minimum difference between the sale price and the purchase price">Adapt purchases to market:</span>'+
+                                              '<select class="nyah" id="all-buySellMargin">'+
+                                                '<option value="-1">Disabled</option>'+
+                                                '<optgroup label="Resources"><option value="0">0 - No Margin</option><option value="1">+1</option><option value="2">+2</option><option value="5">+5</option><option value="10">+10</option><option value="20">+20</option><option value="25">+25</option><option value="50">+50</option><option value="75">+75</option></optgroup>'+
+                                                '<optgroup label="Items / Weapons"><option value="100">+100</option><option value="250">+250</option><option value="500>+500</option><option value="1000">+1.000</option><option value="5000">+5.000</option><option value="10000">+10.000</option><option value="25">+25.000</option><option value="50000">+50.000</option><option value="100000">+100.000</option></optgroup>'+
                                               '</select><br/>'+
+                                           '<span title="Adapt the crazyness of the market.">Market Crazyness</span> <select class="nyah" id="all-crazynessTime">'+
+                                              '<option value="0">0 (Crazy: 0s)</option>'+
+                                              '<option value="12">1 (Mad: 12s)</option>'+
+                                              '<option value="36">3 (Explosive: 36s)</option>'+
+                                              '<option value="60">5 (Intelligent: 60s)</option>'+
+                                              '<option selected value="84">7 (Restricted: 84s)</option>'+
+                                              '<option value="120">9 (Restricted II: 120s)</option>'+
+                                              '<option value="180">10 (Bunker: 180s)</option>'+
+                                              '</select><br/>'+
+                                           '<span title="Indicate the margin of the crazy current limit and the real buy price.">Market Crazyness</span> <select class="nyah" id="all-crazynessMargin">'+
+                                              '<option value="99">0 (Crazy: No Limit)</option>'+
+                                              '<option value="1">1 (Mad: +100%)</option>'+
+                                              '<option value="0.75">3 (Explosive: +75%)</option>'+
+                                              '<option value="0.50">5 (Intelligent: +50%)</option>'+
+                                              '<option selected value="0.25">7 (Restricted: +25%)</option>'+
+                                              '<option value="0.15">9 (Restricted II: +15%)</option>'+
+                                              '<option value="0.10">10 (Bunker: +10%)</option>'+
+                                             '</select><br/><span>Current Crazyness: <span id="currentCrazy"></span></span><br/>'+
+                                             '<div style="padding:10px;width:90%;display:block;"><span style="width:100%;" class="button_red" id="buy-and-sell-btn">Start / Stop Bot</span></div>'+
                                            '</div>'+
-                                           '<div style="padding:10px;width:15%;display:inline-block;"><span class="button_red" id="buy-and-sell-btn">Start / Stop Bot</span></div> <br>This bot developed on AlphaBay. If you did not bought there, you have been scammed.'+
+                                           '<div style="width:130px;float:right;"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins class="adsbygoogle"style="display:inline-block;width:120px;height:240px" data-ad-client="ca-pub-9618665776321227" data-ad-slot="1558345016"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>'+
                                            '</div>'+
                                            '<div id="botEnabled" style="display:none;text-align:center;color:red;margin-top:5px;width:750px;margin-left:auto;margin-right:auto;" class="ib tc"></div>'+
                                            '<div id="botLog" style="display:none;text-align:center;width:750px;margin-left:auto;margin-right:auto;" class="ib tc"></div>');
@@ -61,6 +141,10 @@
 
     var allauto = 0;
     var v_log = [];
+    var v_control = [];
+    var v_crazy = 0;
+    var timing = new Date();
+
     //--- Activate the newly added button.
     document.getElementById ("buy-and-sell-btn").addEventListener (
         "click", AllAutoClickButton, false
@@ -69,21 +153,29 @@
     function AllAuto(){
         $('#reload_menu').click();
         setTimeout(function(){
+                checkCrazyNess();
+                $("#currentCrazy").html(v_crazy);
                 MarketBuyer();
             }, 0);
-        if(parseInt($('#every-resource').val()) >= 2){
-            setTimeout(function(){
-                MarketBuyer();
-            }, 3000);
-        }
         setTimeout(function(){
+            checkCrazyNess();
+            $("#currentCrazy").html(v_crazy);
+            if(parseInt($('#every-resource').val()) >= 2){
+                MarketBuyer();
+            }
+        }, 3000);
+        setTimeout(function(){
+            checkCrazyNess();
+            $("#currentCrazy").html(v_crazy);
             MarketSeller();
             }, 7000);
-        if(parseInt($('#every-resource').val()) >= 3){
-            setTimeout(function(){
+        setTimeout(function(){
+            checkCrazyNess();
+            $("#currentCrazy").html(v_crazy);
+            if(parseInt($('#every-resource').val()) >= 2){
                 MarketBuyer();
-            }, 10000);
-        }
+            }
+        }, 10000);
     }
 
     function MarketSeller () {
@@ -93,7 +185,6 @@
         var sellerAmmount = maxSellAmmount[resource];
         var sellerMargin = parseInt(document.getElementById('all-sellerMargin').value);
 
-        $('.storage_item[url='+resource+']').click();
         if($(".storage_countdown.hasCountdown").length == 0){
             setTimeout(function(){
                 var currentPrice = parseInt($(".storage_price span span").html().substr(0, $(".storage_price span span").html().indexOf(" ")));
@@ -116,11 +207,8 @@
         var resource = parseInt(document.getElementById('all-resource').value);
         var maxPrice = parseInt(document.getElementById('all-maxPrice').value);
         var adaptBuy = parseInt(document.getElementById('all-buySellMargin').value);
-
         var sellerPrice = document.getElementById('all-sellerPrice').value;
         var sellerMargin = document.getElementById('all-sellerMargin').value;
-
-        $('.storage_item[url='+resource+']').click();
 
         setTimeout(function(){
             var currentBuyPrice = parseInt($('.storage_price span span').html().substr(0, $('.storage_price span span').html().indexOf(' ')).replace(/\./g, ''));
@@ -131,7 +219,7 @@
                 maxPrice = sellerPrice - adaptBuy;
             }
             console.log(currentBuyPrice+' '+maxPrice+' ');
-            if (currentBuyPrice <= maxPrice){
+            if (currentBuyPrice <= maxPrice && currentBuyPrice <= v_control){
                 // seller quantity
                 var buyable = 0;
                 var sellerSells = parseInt($('.storage_market_number').html().replace(/\./g, ''));
@@ -154,6 +242,23 @@
                 }
             }
         }, 1000);
+    }
+
+    function checkCrazyNess(){
+        var resource = parseInt(document.getElementById('all-resource').value);
+        $('.storage_item[url='+resource+']').click();
+        var current = parseInt($('.storage_price span span').html().substr(0, $('.storage_price span span').html().indexOf(' ')).replace(/\./g, ''));
+
+        // v_crazy
+        // v_control
+        var crazynessMargin = parseFloat(document.getElementById('all-crazynessMargin').value);
+        var crazynessTime = Math.floor(parseInt(document.getElementById('all-crazynessTime').value)/12);
+        if(v_control.length > crazynessTime){
+            v_control.shift();
+        }
+        v_control.push(current);
+        v_crazy = (v_control.reduce((previous, current) => current += previous))/v_control.length * (1 + crazynessMargin);
+        console.log(v_control);
     }
 
     function vlog(message){
