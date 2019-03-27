@@ -10,6 +10,9 @@
 // @requiere     https://code.jquery.com/ui/1.12.1/jquery-ui.js
 // @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/full_market_bot_3
 /*
+Changes 3.1.1 - 27 March 2019
+- [FIX] Rounded at two decimals the crazy limit.
+
 Changes 3.1.0 - 27 March 2019
 - [ADD] Added Market Crazyness feature. Now the bought price will be restricted if there is an unexpected rise of the pricing. Bot will be still selling but wont buy until the timing.
 
@@ -123,11 +126,11 @@ Changes 2.4.7 - 30 August 2018
                                            '<span title="Indicate the margin of the crazy current limit and the real buy price.">Market Crazyness</span> <select class="nyah" id="all-crazynessMargin">'+
                                               '<option value="99">0 (Crazy: No Limit)</option>'+
                                               '<option value="1">1 (Mad: +100%)</option>'+
-                                              '<option value="0.75">3 (Explosive: +75%)</option>'+
-                                              '<option value="0.50">5 (Intelligent: +50%)</option>'+
-                                              '<option selected value="0.25">7 (Restricted: +25%)</option>'+
-                                              '<option value="0.15">9 (Restricted II: +15%)</option>'+
-                                              '<option value="0.10">10 (Bunker: +10%)</option>'+
+                                              '<option value="0.75">3 (Explosive: +50%)</option>'+
+                                              '<option value="0.50">5 (Intelligent: +25%)</option>'+
+                                              '<option selected value="0.25">7 (Restricted: +15%)</option>'+
+                                              '<option value="0.15">9 (Restricted II: +10%)</option>'+
+                                              '<option value="0.10">10 (Bunker: +5%)</option>'+
                                              '</select><br/><span>Current Crazyness: <input class="nyah" type="text" readonly id="currentCrazy"></span><br/>'+
                                              '<div style="padding:10px;width:90%;display:block;"><span style="width:100%;" class="button_red" id="buy-and-sell-btn">Start / Stop Bot</span></div>'+
                                            '</div>'+
@@ -257,7 +260,7 @@ Changes 2.4.7 - 30 August 2018
             v_control.shift();
         }
         v_control.push(current);
-        v_crazy = (v_control.reduce((previous, current) => current += previous))/v_control.length * (1 + crazynessMargin);
+        v_crazy = ((v_control.reduce((previous, current) => current += previous))/v_control.length * (1 + crazynessMargin)).toFixed(2);
     }
 
     function vlog(message){
