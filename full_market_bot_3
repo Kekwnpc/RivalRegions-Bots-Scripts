@@ -128,7 +128,7 @@ Changes 2.4.7 - 30 August 2018
                                               '<option selected value="0.25">7 (Restricted: +25%)</option>'+
                                               '<option value="0.15">9 (Restricted II: +15%)</option>'+
                                               '<option value="0.10">10 (Bunker: +10%)</option>'+
-                                             '</select><br/><span>Current Crazyness: <input type="text" readonly id="currentCrazy"></span><br/>'+
+                                             '</select><br/><span>Current Crazyness: <input class="nyah" type="text" readonly id="currentCrazy"></span><br/>'+
                                              '<div style="padding:10px;width:90%;display:block;"><span style="width:100%;" class="button_red" id="buy-and-sell-btn">Start / Stop Bot</span></div>'+
                                            '</div>'+
                                            '<div style="width:130px;float:right;"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins class="adsbygoogle"style="display:inline-block;width:120px;height:240px" data-ad-client="ca-pub-9618665776321227" data-ad-slot="1558345016"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>'+
