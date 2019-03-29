@@ -121,9 +121,9 @@ Changes 2.4.7 - 30 August 2018
                                               '<option value="12">1 (Mad: 12s)</option>'+
                                               '<option value="36">3 (Explosive: 36s)</option>'+
                                               '<option value="60">5 (Intelligent: 60s)</option>'+
-                                              '<option selected value="84">7 (Restricted: 84s)</option>'+
-                                              '<option value="120">9 (Restricted II: 120s)</option>'+
-                                              '<option value="180">10 (Bunker: 180s)</option>'+
+                                              '<option selected value="120">7 (Restricted: 120s)</option>'+
+                                              '<option value="180">9 (Restricted II: 180s)</option>'+
+                                              '<option value="300">10 (Bunker: 300s)</option>'+
                                               '</select><br/>'+
                                            '<span title="Indicate the margin of the crazy current limit and the real buy price.">Margin Crazyness</span> <select class="nyah" id="all-crazynessMargin">'+
                                               '<option value="99">0 (Crazy: No Limit)</option>'+
