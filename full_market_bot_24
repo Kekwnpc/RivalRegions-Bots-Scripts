@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Rival Regions - Market Bot
+// @name         Rival Regions - Free Market Bot
 // @namespace    http://discord.gg/DtQQAZd
-// @version      2.4.11
+// @version      2.4.12
 // @description  Requiere AutoSell y AutoBuyer
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -12,11 +12,12 @@
 
 (function() {
     'use strict';
+    var app_version = 'v2.4.12';
 
     $( document ).ajaxComplete(function() {
-        if (window.location.href.substring(window.location.href.indexOf("#")+1) != 'storage' && $( "#nyancatnyancat" ).length){
-            $( "#nyancatnyancat" ).remove();
-        }else if(window.location.href.substring(window.location.href.indexOf("#")+1) == 'storage' && !$( "#nyancatnyancat" ).length){
+        if (window.location.href.substring(window.location.href.indexOf("#")+1) != 'storage' && $( "#nyancatnyancat-free" ).length){
+            $( "#nyancatnyancat-free" ).remove();
+        }else if(window.location.href.substring(window.location.href.indexOf("#")+1) == 'storage' && !$( "#nyancatnyancat-free" ).length){
             insertBanner();
         }
     });
@@ -25,23 +26,29 @@
         var pathname = window.location.href;
         pathname = pathname.substring(pathname.indexOf("#")+1);
         console.log(pathname);
-        if (pathname == 'storage' && !$( "#nyancatnyancat" ).length){
-            $(".konf_maker").parent().before('<div id="nyancatnyancat" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>AlphaBay Market Bot (v2.4.11)</h1>'+
-                                           '<div style="padding:10px;width:20%;display:inline-block;">OE 12 Secs</div>'+
-                                           '<div style="padding:10px;width:70%;display:inline-block;"><select id="every-resource"><option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option><option value="2">3 Operations Every 12 Seconds (2 Buy + 1 Sell) </option><option value="3">4 Operations Every 12 Seconds (3 Buy + 1 Sell) </option></select></div>'+
+        if (pathname == 'storage' && !$( "#nyancatnyancat-free" ).length){
+            $(".konf_maker").parent().before('<style>input.nyah,select.nyah{float:right;width:250px;}#nyancatnyancat{line-height:1.5em}</style>'+
+                                           '<div id="nyancatnyancat-free" style="width:700px;height:290px;margin-top:25px;margin-left:auto;margin-right:auto;padding-left: 25px;padding-right: 25px" class="ib tc">'+
+                                             '<h1 style="text-align:center">AlphaBay Free Market Bot('+app_version+')</h1>'+
+                                           '<div style="width:150;display:inline-block;float:left">'+
+                                                "<iframe id='a2dbf12a' name='a2dbf12a' src='https://ads.kcsystem.es/www/delivery/afr.php?zoneid=27&amp;cb=%n&amp;ct0=%c' frameborder='0' scrolling='no' width='120' height='240'><a href='https://ads.kcsystem.es/www/delivery/ck.php?n=a2eef798&amp;cb=%n' target='_blank'><img src='https://ads.kcsystem.es/www/delivery/avw.php?zoneid=27&amp;cb=%n&amp;n=a2eef798&amp;ct0=%c' border='0' alt='' /></a></iframe>"+
+                                             '</div>'+
+                                           '<div style="padding:10px;width:15%;display:inline-block;">OE 12 Secs</div>'+
+                                           '<div style="padding:10px;width:50%;display:inline-block;"><select id="every-resource"><option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option><option value="2">3 Operations Every 12 Seconds (2 Buy + 1 Sell) </option><option value="3">4 Operations Every 12 Seconds (3 Buy + 1 Sell) </option></select></div>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">Resource to Work On</div>'+
-                                           '<div style="padding:10px;width:70%;display:inline-block;"><select id="all-resource">'+
+                                           '<div style="padding:10px;width:50%;display:inline-block;"><select id="all-resource">'+
                                              '<optgroup label="Resources"><option value="3">Petrol/Oil</option><option value="4">Mineral/Rocks</option><option value="11">Uranium</option><option value="15">Diamonds</option><option value="21">Liquid O2</option><option value="24">H3</option></optgroup>'+
                                              '<optgroup label="Items"><option value="13">Antirad</option><option value="20">Stellar Ships</option></optgroup>'+
                                              '<optgroup label="Weapons"><option value="2">Tanks</option><option value="1">Planes</option><option value="14">Missile</option><option value="16">Bombership</option><option value="18">Battleship</option><option value="22">Lunar Tank</option><option value="23">Spacial Station</option><</optgroup>'+
                                              '</select></div>'+
                                            '<div style="padding:10px;width:20%;display:inline-block;">Pricing</div>'+
                                            '<div style="padding:10px;width:45%;display:inline-block;">Sell Price: <input value="" placeholder="Sell Price" id="all-sellerPrice"/><br/>Buy Price: <input value="" placeholder="MAX buy Pricing" id="all-maxPrice"/></div>'+
-                                           '<div style="padding:10px;width:15%;display:inline-block;"><span class="button_red" id="buy-and-sell-btn">Start / Stop Bot</span></div>'+
+                                           '<div style="padding:10px;width:15%;display:inline-block;"><span class="button_red" style="width:440px" id="buy-and-sell-btn">Start / Stop Bot</span></div>'+
                                            '<br><center>This bot is free. If you have paid you have been scammed.<br/> Join <a href="http://discord.gg/G6Tu5cn">AlphaBay</a> to get free bots and a real black market experience. (Only +60)</center>'+
+                                           '<br>'+
                                            '</div>'+
                                            '<div id="botEnabled" style="display:none;text-align:center;color:red;margin-top:5px;width:750px;margin-left:auto;margin-right:auto;" class="ib tc"></div>'+
-                                           '<div id="botLog" style="display:none;text-align:center;width:750px;margin-left:auto;margin-right:auto;" class="ib tc"></div>');
+                                           '<div id="botLog" style="display:none;position:absolute;top: 105px;left: 10px;;width:250px;float:left;" class="ib tc"></div>');
             document.getElementById ("buy-and-sell-btn").addEventListener ("click", AllAutoClickButton , false);
         }
     }
