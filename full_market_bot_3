@@ -11,49 +11,29 @@
 // @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/full_market_bot_3
 /*
 Changes 3.1.2 - 11 April 2019
+- [ADD] Added "Stupid" mode on Crazyness
+- [FIX] Now the values on crazy mode are correct.
+Changes 3.1.2 - 11 April 2019
 - [FIX] Changed the styling
-
 Changes 3.1.1 - 27 March 2019
 - [FIX] Rounded at two decimals the crazy limit.
 - [FIX] Fix the array that held the latest pricing. Now will delete if you select a lower time limit.
-
 Changes 3.1.0 - 27 March 2019
 - [ADD] Added Market Crazyness feature. Now the bought price will be restricted if there is an unexpected rise of the pricing. Bot will be still selling but wont buy until the timing.
-
 Changes 3.0.3 - 20 March 2019
 - [FIX] Added new purchase adaptations.
 - [MOD] Improved the "AntiBot" feauture to avoid ban.
 - [AB] This versión and on wont be published.
-
 Changes 3.0.2 - 30 December 2018
 - [FIX] Now the bot will buy entire stack less 100, and entire if the quantity is 100 or lower
-
 Changes 3.0.1 - 28 October 2018
 - [FIX] When the cooldown is active, the bot wont try to set a new offer, this reduce the "antibot" feature.
-
 Changes 3.0.0 - 27 October 2018
+- Come from 2.4.10
 - [ADD] Now the bot will raise and reduce the sale pricing looking the current market pricing, never lower than the user sell price. This option can be enabled or disabled.
 - [ADD] Now the bot will raise and reduce the purchase pricing looking the current market pricing, This option can be enabled, disabled and edited with on a select. If the current purchase pricing is lower than the diference between the current market pricing and the margin pricing, will raise its price, otherwise, will mantain the fixed purchase pricing.
 - [ADD] Now works on https url.
 - [FIX] Now buys partially a stack when not enough money to buy a full stack.
-
-Changes 2.4.11 - 20 March 2019
-- AntiScam Message
-- Advertising System
-
-Changes 2.4.10 - 22 October 2018
-- [FIX] Now works on https
-
-Changes 2.4.9 - 22 October 2018
-- [FIX] Changed the text. Instead of "Start Bot" now is "Start/Stop Bot"
-
-Changes 2.4.8 - 31 August 2018
-- [ADD] Now, Bot can sell any item from the warehouse. Until now, any item can be bought but only first line resources can be sold.
-
-Changes 2.4.7 - 30 August 2018
-- [FIX] Now test that more than 0 units can be bought before clicking "Buy"
-- [FIX] Now the log, logs the what quantity is bought instead of what the seller is selling
-
 */
 
 // ==/UserScript==
@@ -61,7 +41,7 @@ Changes 2.4.7 - 30 August 2018
 (function() {
     'use strict';
 
-    var app_version = 'v3.1.2';
+    var app_version = 'v3.1.3';
 
     $( document ).ajaxComplete(function() {
         if (window.location.href.substring(window.location.href.indexOf("#")+1) != 'storage' && $( "#nyancatnyancat" ).length){
@@ -76,7 +56,7 @@ Changes 2.4.7 - 30 August 2018
         pathname = pathname.substring(pathname.indexOf("#")+1);
         if (pathname == 'storage' && !$( "#nyancatnyancat" ).length){
             $(".konf_maker").parent().before('<style>input.nyah,select.nyah{float:right;width:250px;}#nyancatnyancat{line-height:1.5em}</style>'+
-                                           '<div id="nyancatnyancat" style="width:1300px;height:250px;margin-top:25px;margin-left:auto;margin-right:auto;padding-left: 25px;padding-right: 25px" class="ib tc">'+
+                                           '<div id="nyancatnyancat" style="width:1300px;height:230px;margin-top:25px;margin-left:auto;margin-right:auto;padding-left: 25px;padding-right: 25px" class="ib tc">'+
                                              '<h1 style="text-align:center">AlphaBay Broker Bot ('+app_version+')</h1>'+
                                            '<div style="width:500px;display:inline-block;float:left">OE 12 Secs: '+
                                            '<select class="nyah" id="every-resource">'+
@@ -135,11 +115,12 @@ Changes 2.4.7 - 30 August 2018
                                            '<span title="Indicate the margin of the crazy current limit and the real buy price.">Margin Crazyness</span> <select class="nyah" id="all-crazynessMargin">'+
                                               '<option value="99">0 (Crazy: No Limit)</option>'+
                                               '<option value="1">1 (Mad: +100%)</option>'+
-                                              '<option value="0.75">3 (Explosive: +50%)</option>'+
-                                              '<option value="0.50">5 (Intelligent: +25%)</option>'+
-                                              '<option selected value="0.25">7 (Restricted: +15%)</option>'+
-                                              '<option value="0.15">9 (Restricted II: +10%)</option>'+
-                                              '<option value="0.10">10 (Bunker: +5%)</option>'+
+                                              '<option value="0.50">3 (Explosive: +50%)</option>'+
+                                              '<option value="0.25">5 (Intelligent: +25%)</option>'+
+                                              '<option selected value="0.15">7 (Restricted: +15%)</option>'+
+                                              '<option value="0.10">9 (Restricted II: +10%)</option>'+
+                                              '<option value="0.05">10 (Bunker: +5%)</option>'+
+                                              '<option value="0.02">11 (Stupid: +2%)</option>'+
                                              '</select><br/><span>Current Crazyness: <input class="nyah" type="text" readonly id="currentCrazy"></span><br/>'+
                                              '<div style="padding:10px;width:90%;display:block;"><span style="width:100%;" class="button_red" id="buy-and-sell-btn">Start / Stop Bot</span></div>'+
                                              '<div id="botEnabled" style="display:none;text-align:center;color:red;margin-top:10px;"></div>'+
