@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Rival Regions - Lister 2 CSV
 // @namespace    http://discord.gg/DtQQAZd
-// @version      0.4
+// @version      0.6
 // @description  Table to CSV (Valid for #listed and #war pages)
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -13,11 +13,13 @@
 (function() {
     'use strict';
 
+    let version = 'R.6.0';
+
     $( document ).ajaxComplete(function(){
         let link= window.location.href.substring(window.location.href.indexOf("#")+1, window.location.href.indexOf("/", window.location.href.indexOf("#")+1));
-        if ( (link != 'listed' || link != 'war') && $( "#nyancat-donator" ).length){
+        if ( (link != 'listed' && link != 'war')){
             $( "#nyancat-donator" ).remove();
-        }else if( (link != 'listed' || link != 'war') && !$( "#nyancat-donator" ).length){
+        }else if( (link == 'listed' || link == 'war') && !$( "#nyancat-donator" ).length){
             insertBanner();
         }
     });
@@ -25,12 +27,17 @@
     function insertBanner(){
         var pathname = window.location.href.substring(window.location.href.indexOf("#")+1, window.location.href.indexOf("/", window.location.href.indexOf("#")+1));
         if ( (pathname != 'listed' || pathname != 'war') && !$( "#nyancat-donator" ).length){
-         $("#header_slide_inner").before('<div id="nyancat-donator" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Donator List to CSV (v0.1.0)</h1>'+
-                                           '<div style="padding:10px;width:15%;display:inline-block;"><span class="button_red" id="buy-and-sell-btn">Execute</span></div>'+
-                                           '<textarea id="nyancat-donatetext"/>'+
+         $("#header_slide_inner").before('<div id="nyancat-donator" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>Donator List to CSV ('+version+')</h1>'+
+                                           '<div style="padding:10px;width:15%;display:inline-block;"><span class="button_red" style="width:100%" id="buy-and-sell-btn">Execute</span><span class="button_red" style="width:100%" id="extend-btn">Extend</span></div>'+
+                                           '<textarea id="nyancat-donatetext" style="margin-left:30px;height:3em;width:70%;"/>'+
                                            '</div>');
             document.getElementById ("buy-and-sell-btn").addEventListener ("click", AllAutoClickButton , false);
+            document.getElementById ("extend-btn").addEventListener ("click", ExtendButton , false);
         }
+    }
+
+    function ExtendButton(){
+        if($("#list_last").length) $("#list_last").click();
     }
 
     function arrayToCSV (twoDiArray) {
