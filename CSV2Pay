@@ -1,0 +1,81 @@
+// ==UserScript==
+// @name         Rival Regions - CSV2Pay
+// @namespace    http://discord.gg/DtQQAZd
+// @version      0.1.0
+// @author       KCSystem
+// @match        http://rivalregions.com
+// @match        https://rivalregions.com
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    var app_version = '0.1.0';
+
+        $( document ).ajaxComplete(function(){
+        let link= window.location.href.substring(window.location.href.indexOf("#")+1, window.location.href.indexOf("/", window.location.href.indexOf("#")+1));
+        if ( (link != 'listed' && link != 'war')){
+            $( "#nyah-csv2payment" ).remove();
+        }else if( (link == 'listed' || link == 'war') && !$( "#nyah-csv2payment" ).length){
+            insertBanner();
+        }
+    });
+    function insertBanner(){
+        var pathname = window.location.href.substring(window.location.href.indexOf("#")+1, window.location.href.indexOf("/", window.location.href.indexOf("#")+1));
+        if ( (pathname != 'listed' || pathname != 'war') && !$( "#nyah-csv2payment" ).length){
+         $("#header_slide_inner").before('<style>.with90{width:90%!important;margin-left:5px;margin-right:5px;padding:0px;margin-top:5px;;}</style><div id="nyah-csv2payment" style="width:750px;margin-top:25px;margin-left:auto;margin-right:auto;" class="ib tc"> <h1>CSV2Pay ('+app_version+')</h1>'+
+                                           '<div style="padding:10px;">'+
+                                              '<span class="button_red with90" style="padding-top:5px;padding-bottom:5px;" id="makepayment-btn">Make Payment</span><br/>'+
+                                              '<input id="csv2pay-csr" class="with90" placeholder="csr"/><br/>'+
+                                              '<textarea id="csv2pay-input" class="with90" placeholder="user_id,value;user_id,value;user_id,value" style="height:3em;"/>'+
+                                           '</div>'+
+                                         '</div>');
+            document.getElementById ("makepayment-btn").addEventListener ("click", AllAuto , false);
+        }
+    }
+
+    var allauto = 0;
+    var v_log = [];
+    //--- Activate the newly added button.
+    document.getElementById ("makepayment-btn").addEventListener (
+        "click", AllAuto, false
+    );
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function AllAuto(){
+        v_log = [];
+        var csv = $("#csv2pay-input").val();
+        var csr = $("#csv2pay-csr").val();
+        var lines=csv.split(";");
+        var result = [];
+        for(var i=0;i<lines.length;i++){
+            var obj = {};
+            var currentline=lines[i].split(",");
+            obj['id'] = currentline[0];
+            obj['payment'] = currentline[1];
+            result.push(obj);
+        }
+        result.forEach(function(data){
+           $.post("https://rivalregions.com/storage/donate",
+                  {
+               whom: data.id,
+               type: 0,
+               n: data.payment,
+               c: csr
+           }, function(data){
+           });
+        });
+    }
+
+    function vlog(message){
+        v_log.push(message);
+        console.log(v_log.length);
+        if (v_log.length > 5){
+            v_log.shift();
+        }
+        //$('#botLog').html(v_log.join('<br>'));
+    }
+})();
