@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Rival Regions - AlphaBay Broker Bot
+// @name         Rival Regions - LoliconBay Broker Bot
 // @namespace    http://discord.gg/DtQQAZd
-// @version      3.2.0
+// @version      3.2.1
 // @description  The only and best broker bot to earn money on the RR user market
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -10,6 +10,9 @@
 // @requiere     https://code.jquery.com/ui/1.12.1/jquery-ui.js
 // @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/full_market_bot_3
 /*
+Changes 3.2.1 - 19 August 2019
+- [FIX] AntiBot Feature
+- [FIX] Now will check correctly if there exists a current offer. If true, wont try to do another sale.
 Changes 3.2.0 - 15 August 2019 - Mars Update
 - [ADD] New Reources
 Changes 3.1.3 - 17 April 2019
@@ -43,7 +46,7 @@ Changes 3.0.0 - 27 October 2018
 (function() {
     'use strict';
 
-    var app_version = 'v3.2.0';
+    var app_version = 'v3.2.1';
 
     $( document ).ajaxComplete(function() {
         if (window.location.href.substring(window.location.href.indexOf("#")+1) != 'storage' && $( "#nyancatnyancat" ).length){
@@ -59,12 +62,13 @@ Changes 3.0.0 - 27 October 2018
         if (pathname == 'storage' && !$( "#nyancatnyancat" ).length){
             $(".konf_maker").parent().before('<style>input.nyah,select.nyah{float:right;width:250px;}#nyancatnyancat{line-height:1.5em}</style>'+
                                            '<div id="nyancatnyancat" style="width:1300px;height:230px;margin-top:25px;margin-left:auto;margin-right:auto;padding-left: 25px;padding-right: 25px" class="ib tc">'+
-                                             '<h1 style="text-align:center">AlphaBay Broker Bot ('+app_version+')</h1>'+
-                                           '<div style="width:500px;display:inline-block;float:left">OE 12 Secs: '+
+                                             '<h1 style="text-align:center">LoliconBay Broker Bot ('+app_version+')</h1>'+
+                                           '<div style="width:500px;display:inline-block;float:left">OE 30 Secs: '+
                                            '<select class="nyah" id="every-resource">'+
-                                             '<option value="1">2 Operation Every 12 Seconds (1 Buy + 1 Sell) </option>'+
-                                             '<option value="2">3 Operations Every 12 Seconds (2 Buy + 1 Sell) </option>'+
-                                             '<option value="3">4 Operations Every 12 Seconds (3 Buy + 1 Sell) </option>'+
+                                             '<option value="1">2 Operation Every 30 Seconds (1 Buy + 1 Sell) </option>'+
+                                             '<option value="2">3 Operations Every 30 Seconds (2 Buy + 1 Sell) </option>'+
+                                             '<option value="3">4 Operations Every 30 Seconds (3 Buy + 1 Sell) </option>'+
+                                             '<option value="4">5 Operations Every 30 Seconds (4 Buy + 1 Sell) </option>'+
                                              '</select><br/>'+
                                            'Resource to Work On: '+
                                            '<select class="nyah" id="all-resource">'+
@@ -157,19 +161,26 @@ Changes 3.0.0 - 27 October 2018
             if(parseInt($('#every-resource').val()) >= 2){
                 MarketBuyer();
             }
-        }, 3000);
+        }, 7000);
         setTimeout(function(){
             checkCrazyNess();
             $("#currentCrazy").val(v_crazy);
             MarketSeller();
-            }, 7000);
+            }, 14000);
         setTimeout(function(){
             checkCrazyNess();
             $("#currentCrazy").val(v_crazy);
-            if(parseInt($('#every-resource').val()) >= 2){
+            if(parseInt($('#every-resource').val()) >= 3){
                 MarketBuyer();
             }
-        }, 10000);
+        }, 20000);
+        setTimeout(function(){
+            checkCrazyNess();
+            $("#currentCrazy").val(v_crazy);
+            if(parseInt($('#every-resource').val()) >= 4){
+                MarketBuyer();
+            }
+        }, 27000);
     }
 
     function MarketSeller () {
@@ -179,7 +190,7 @@ Changes 3.0.0 - 27 October 2018
         var sellerAmmount = maxSellAmmount[resource];
         var sellerMargin = parseInt(document.getElementById('all-sellerMargin').value);
 
-        if($(".storage_countdown.hasCountdown").length == 0){
+        if($(".storage_countdown.hasCountdown").length == 0 && $(".storage_sell").text() == "place an offer"){
             setTimeout(function(){
                 var currentPrice = parseInt($(".storage_price span span").html().substr(0, $(".storage_price span span").html().indexOf(" ")));
                 if(sellerMargin == 1 && currentPrice > sellerPrice){
@@ -273,14 +284,14 @@ Changes 3.0.0 - 27 October 2018
     function AllAutoClickButton(){
         if(allauto == 0){
             console.log('Starting Bot...');
-            $('#botEnabled').html('Starting Bot...').fadeIn().delay(5000).html('Bot Running...');
+            $('#botEnabled').html('Preparing Bot...').fadeIn().delay(5000).html('Bot Running...');
             $('#botLog').html('').fadeIn();
-            allauto = setInterval(AllAuto, 12000);
+            allauto = setInterval(AllAuto, 30000);
         }else{
             clearInterval(allauto);
             allauto = 0;
-            $('#botEnabled').html('Stopping Bot...').delay(12000).fadeOut();
-            $('#botLog').delay(12000).fadeOut();
+            $('#botEnabled').html('Stopping Bot...').delay(30000).fadeOut();
+            $('#botLog').delay(30000).fadeOut();
         }
     }
 
