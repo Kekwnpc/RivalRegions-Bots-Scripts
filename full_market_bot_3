@@ -48,7 +48,7 @@ Changes 3.0.0 - 27 October 2018
 (function() {
     'use strict';
 
-    var app_version = 'v3.2.1';
+    var app_version = 'v3.2.3';
 
     $( document ).ajaxComplete(function() {
         if (window.location.href.substring(window.location.href.indexOf("#")+1) != 'storage' && $( "#nyancatnyancat" ).length){
