@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LoliconBay - Premium Broker Bot
 // @namespace    http://discord.gg/DtQQAZd
-// @version      3.2.2
+// @version      3.2.3
 // @description  The only and best broker bot to earn money on the RR user market
 // @author       KCSystem
 // @match        http://rivalregions.com
@@ -10,6 +10,8 @@
 // @requiere     https://code.jquery.com/ui/1.12.1/jquery-ui.js
 // @updateURL    https://raw.githubusercontent.com/Kytoh/MyBots/master/full_market_bot_3
 /*
+Changes 3.2.3 - 21 April 2020
+- [FIX] Changed Advert
 Changes 3.2.1 - 19 August 2019
 - [FIX] AntiBot Feature
 - [FIX] Now will check correctly if there exists a current offer. If true, wont try to do another sale.
@@ -105,7 +107,7 @@ Changes 3.0.0 - 27 October 2018
                                                 '<optgroup label="Items / Weapons"><option value="100">+100</option><option value="250">+250</option><option value="500>+500</option><option value="1000">+1.000</option><option value="5000">+5.000</option><option value="10000">+10.000</option><option value="25">+25.000</option><option value="50000">+50.000</option><option value="100000">+100.000</option></optgroup>'+
                                               '</select><br/>'+
                                              '</div>'+
-                                             '<div style="width:150;display:inline-block;float:left">'+
+                                             '<div style="margin-left:40px;width:150;display:inline-block;float:left">'+
                                                 "<iframe id='a2dbf12a' name='a2dbf12a' src='https://ads.kcsystem.es/www/delivery/afr.php?zoneid=27&amp;cb=%n&amp;ct0=%c' frameborder='0' scrolling='no' width='120' height='240'><a href='https://ads.kcsystem.es/www/delivery/ck.php?n=a2eef798&amp;cb=%n' target='_blank'><img src='https://ads.kcsystem.es/www/delivery/avw.php?zoneid=27&amp;cb=%n&amp;n=a2eef798&amp;ct0=%c' border='0' alt='' /></a></iframe>"+
                                              '</div>'+
                                              '<div style="width:500px;display:inline-block;float:right">'+
