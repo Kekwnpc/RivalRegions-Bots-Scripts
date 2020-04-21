@@ -10,6 +10,8 @@
 // @requiere     https://code.jquery.com/ui/1.12.1/jquery-ui.js
 // @updateURL    https://raw.githubusercontent.com/Kytoh/RivalRegions-Bots-Scripts/master/full_market_bot_3
 /*
+Changes 3.2.4 - 21 April 2020
+- [FIX] Why are you using other language than english? Mimimi
 Changes 3.2.3 - 21 April 2020
 - [FIX] Changed Advert
 Changes 3.2.1 - 19 August 2019
@@ -48,7 +50,7 @@ Changes 3.0.0 - 27 October 2018
 (function() {
     'use strict';
 
-    var app_version = 'v3.2.3';
+    var app_version = 'v3.2.4';
 
     $( document ).ajaxComplete(function() {
         if (window.location.href.substring(window.location.href.indexOf("#")+1) != 'storage' && $( "#nyancatnyancat" ).length){
