@@ -194,7 +194,7 @@ Changes 3.0.0 - 27 October 2018
         var sellerAmmount = maxSellAmmount[resource];
         var sellerMargin = parseInt(document.getElementById('all-sellerMargin').value);
 
-        if($(".storage_countdown.hasCountdown").length == 0 && $(".storage_sell").text() == "place an offer"){
+        if($(".storage_countdown.hasCountdown").length == 0){
             setTimeout(function(){
                 var currentPrice = parseInt($(".storage_price span span").html().substr(0, $(".storage_price span span").html().indexOf(" ")));
                 if(sellerMargin == 1 && currentPrice > sellerPrice){
